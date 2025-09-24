@@ -1,4 +1,4 @@
-# tres_rayalimpio_sin_menu.py – explicación no repetitiva
+# tres_raya
 
 ## 1. Objetivo general  
 Mini-juego “Tres en raya” que **arranca directamente en la partida**; cuando finaliza permite:  
@@ -59,10 +59,5 @@ No hay menús ni estados intermedios; todo gira en torno a un único bucle `whil
 
 ---
 
-## 8. Reinicio limpio  
+## 8. Reinicio   
 `reset()` crea **nuevo array** `[[0]*3 for _ in range(3)]` (evita copias por referencia), vacía `particles`, pone `turn = 1` y `winner = 0`.
-
----
-
-## 9. Archivo final  
-Un único archivo, sin dependencias externas, listo para ejecutar con `python tres_rayalimpio_sin_menu.py`.
