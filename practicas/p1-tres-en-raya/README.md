@@ -1,19 +1,19 @@
-# Descripcion
+# Juego 3 en Raya en Consola
 
-Realizar el juego de tres en raya para dos jugadores.
+Este proyecto implementa el clásico juego de **3 en raya (Tic-Tac-Toe)** en la consola utilizando Python.  
+Dos jugadores se turnan para colocar sus fichas (`X` y `O`) en un tablero de 3x3 hasta que uno gane o se produzca un empate.
 
-Crear una rama en el repositorio de la materia con el nombre de
+---
 
-1. Solo una persona
+## Estructura del Código
 
-```
-git checkout -b QuelaliGaston/Practica1
-```
+El programa está compuesto por varias funciones principales:
 
-2. Trabajo de dos personas
+### 1. `imprimir_tablero(tablero)`
+Muestra el tablero actual en la consola.
 
-```
-git checkout -b QuelaliGaston_CalleErlanger/Practica1
-```
-
-Crear un `README.md` con toda la documentacion tecnica de la practica
+```python
+def imprimir_tablero(tablero):
+    for fila in tablero:
+        print(" | ".join(fila))
+        print("-" * 5)
