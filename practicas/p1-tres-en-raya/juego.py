@@ -1,70 +1,104 @@
-# Juego de 3 en raya para dos jugadores
+import pygame
+import sys
 
-def mostrar_tablero(tablero):
-    print("\n")
-    for fila in tablero:
-        print(" | ".join(fila))
-        print("-" * 5)
-    print("\n")
+# Inicializar pygame
+pygame.init()
 
-def hay_ganador(tablero, jugador):
-    # Revisar filas
-    for fila in tablero:
-        if all(celda == jugador for celda in fila):
-            return True
-    # Revisar columnas
-    for col in range(3):
-        if all(tablero[fila][col] == jugador for fila in range(3)):
-            return True
+# Dimensiones de la ventana
+ANCHO, ALTO = 600, 600
+LINEA_ANCHO = 15
+TAM_CASILLA = ANCHO // 3
+
+# Colores
+BLANCO = (255, 255, 255)
+NEGRO = (0, 0, 0)
+AZUL = (28, 170, 156)
+ROJO = (200, 0, 0)
+
+# Crear la ventana
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("3 en Raya")
+
+# Tablero vacío (3x3)
+tablero = [[None for _ in range(3)] for _ in range(3)]
+jugador = "X"  # Comienza X
+
+# Fuente para texto
+fuente = pygame.font.Font(None, 60)
+
+
+def dibujar_tablero():
+    pantalla.fill(BLANCO)
+    # Dibujar líneas verticales
+    pygame.draw.line(pantalla, NEGRO, (TAM_CASILLA, 0), (TAM_CASILLA, ALTO), LINEA_ANCHO)
+    pygame.draw.line(pantalla, NEGRO, (2 * TAM_CASILLA, 0), (2 * TAM_CASILLA, ALTO), LINEA_ANCHO)
+    # Dibujar líneas horizontales
+    pygame.draw.line(pantalla, NEGRO, (0, TAM_CASILLA), (ANCHO, TAM_CASILLA), LINEA_ANCHO)
+    pygame.draw.line(pantalla, NEGRO, (0, 2 * TAM_CASILLA), (ANCHO, 2 * TAM_CASILLA), LINEA_ANCHO)
+
+
+def dibujar_fichas():
+    for fila in range(3):
+        for col in range(3):
+            if tablero[fila][col] == "X":
+                texto = fuente.render("X", True, ROJO)
+                pantalla.blit(texto, (col * TAM_CASILLA + 60, fila * TAM_CASILLA + 40))
+            elif tablero[fila][col] == "O":
+                texto = fuente.render("O", True, AZUL)
+                pantalla.blit(texto, (col * TAM_CASILLA + 60, fila * TAM_CASILLA + 40))
+
+
+def verificar_ganador():
+    # Revisar filas y columnas
+    for i in range(3):
+        if tablero[i][0] == tablero[i][1] == tablero[i][2] and tablero[i][0] is not None:
+            return tablero[i][0]
+        if tablero[0][i] == tablero[1][i] == tablero[2][i] and tablero[0][i] is not None:
+            return tablero[0][i]
     # Revisar diagonales
-    if all(tablero[i][i] == jugador for i in range(3)):
-        return True
-    if all(tablero[i][2 - i] == jugador for i in range(3)):
-        return True
-    return False
+    if tablero[0][0] == tablero[1][1] == tablero[2][2] and tablero[0][0] is not None:
+        return tablero[0][0]
+    if tablero[0][2] == tablero[1][1] == tablero[2][0] and tablero[0][2] is not None:
+        return tablero[0][2]
+    return None
 
-def tablero_lleno(tablero):
-    return all(celda != " " for fila in tablero for celda in fila)
 
-def tres_en_raya():
-    tablero = [[" " for _ in range(3)] for _ in range(3)]
-    jugadores = ["X", "O"]
-    turno = 0
+def mostrar_mensaje(mensaje):
+    texto = fuente.render(mensaje, True, NEGRO)
+    rect = texto.get_rect(center=(ANCHO // 2, ALTO // 2))
+    pantalla.blit(texto, rect)
+    pygame.display.flip()
+    pygame.time.wait(2000)
 
-    print("Bienvenido al juego 3 en raya")
-    mostrar_tablero(tablero)
 
-    while True:
-        jugador = jugadores[turno % 2]
-        print(f"Turno del jugador {jugador}")
+# Bucle principal
+ejecutando = True
+dibujar_tablero()
 
-        try:
-            fila = int(input("Elige fila (0-2): "))
-            col = int(input("Elige columna (0-2): "))
-        except ValueError:
-            print("Entrada inválida. Debes escribir números.")
-            continue
+while ejecutando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            ejecutando = False
 
-        if fila not in [0, 1, 2] or col not in [0, 1, 2]:
-            print("Posición fuera de rango. Intenta de nuevo.")
-            continue
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+            x, y = evento.pos
+            fila = y // TAM_CASILLA
+            col = x // TAM_CASILLA
 
-        if tablero[fila][col] != " ":
-            print("Esa posición ya está ocupada. Intenta de nuevo.")
-            continue
+            if tablero[fila][col] is None:
+                tablero[fila][col] = jugador
+                ganador = verificar_ganador()
+                if ganador:
+                    dibujar_tablero()
+                    dibujar_fichas()
+                    mostrar_mensaje(f"Ganó {ganador}!")
+                    tablero = [[None for _ in range(3)] for _ in range(3)]  # Reiniciar juego
+                else:
+                    jugador = "O" if jugador == "X" else "X"
 
-        tablero[fila][col] = jugador
-        mostrar_tablero(tablero)
+    dibujar_tablero()
+    dibujar_fichas()
+    pygame.display.flip()
 
-        if hay_ganador(tablero, jugador):
-            print(f"¡El jugador {jugador} gana!")
-            break
-
-        if tablero_lleno(tablero):
-            print("¡Empate!")
-            break
-
-        turno += 1
-
-# Ejecutar el juego
-tres_en_raya()
+pygame.quit()
+sys.exit()
