@@ -17,3 +17,7 @@ def imprimir_tablero(tablero):
     for fila in tablero:
         print(" | ".join(fila))
         print("-" * 5)
+ 
+ Este proyecto implementa el clásico juego de **3 en raya (Tic-Tac-Toe)** en la consola utilizando Python.  
+Dos jugadores se turnan para colocar sus fichas (`X` y `O`) en un tablero de 3x3 hasta que uno gane o se produzca un empate.
+hola atodos 
