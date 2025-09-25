@@ -1,9 +1,21 @@
-# Juego 3 en raya en consola
+# Juego 3 en raya en consola (con tablero guía 1-9)
 
 def imprimir_tablero(tablero):
-    for fila in tablero:
-        print(" | ".join(fila))
-        print("-" * 5)
+    print("\n")
+    for i, fila in enumerate(tablero):
+        print("  " + "  |  ".join(fila))
+        if i < 2:
+            print("-----+-----+-----")
+    print("\n")
+
+def imprimir_tablero_guia():
+    print("Tablero guía (elige un número del 1 al 9):\n")
+    guia = [[str(i + j*3 + 1) for i in range(3)] for j in range(3)]
+    for i, fila in enumerate(guia):
+        print("  " + "  |  ".join(fila))
+        if i < 2:
+            print("-----+-----+-----")
+    print("\n")
 
 def hay_ganador(tablero, jugador):
     # Revisar filas
@@ -28,12 +40,24 @@ def jugar():
     tablero = [[" " for _ in range(3)] for _ in range(3)]
     jugador_actual = "X"
 
+    imprimir_tablero_guia()  # Mostrar guía al inicio
+
     while True:
         imprimir_tablero(tablero)
         print(f"Turno del jugador {jugador_actual}")
-        
-        fila = int(input("Elige fila (0, 1, 2): "))
-        col = int(input("Elige columna (0, 1, 2): "))
+        print("Elige una casilla (1-9):")
+
+        try:
+            movimiento = int(input("> ")) - 1
+            if movimiento < 0 or movimiento > 8:
+                print("Número inválido. Debe ser entre 1 y 9.")
+                continue
+        except ValueError:
+            print("Entrada inválida. Escribe un número del 1 al 9.")
+            continue
+
+        fila = movimiento // 3
+        col = movimiento % 3
 
         if tablero[fila][col] == " ":
             tablero[fila][col] = jugador_actual
@@ -51,7 +75,6 @@ def jugar():
             print("¡Empate!")
             break
 
-        # Cambiar de jugador
         jugador_actual = "O" if jugador_actual == "X" else "X"
 
 if __name__ == "__main__":
