@@ -38,7 +38,7 @@ class TresEnRaya:
         
         tk.Label(
             titulo_frame,
-            text="By Bustamante Adrian - Práctica 1",
+            text="By Bustamante Adrian, Mamani Samuel - Práctica 1",
             font=('Arial', 10),
             fg='#BDC3C7',
             bg='#2C3E50'
