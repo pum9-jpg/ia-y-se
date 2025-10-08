@@ -1,0 +1,290 @@
+import pygame
+import sys
+import openai
+
+# Inicializar pygame
+pygame.init()
+
+# Dimensiones de la ventana
+ANCHO, ALTO = 600, 600
+LINEA_ANCHO = 15
+TAM_CASILLA = ANCHO // 3
+
+# Colores
+BLANCO = (255, 255, 255)
+NEGRO = (0, 0, 0)
+AZUL = (28, 170, 156)
+ROJO = (200, 0, 0)
+
+# Crear la ventana
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("3 en Raya con IA LLM7")
+
+# Tablero vacío (3x3)
+tablero = [[None for _ in range(3)] for _ in range(3)]
+jugador = "X"  # Comienza X (humano)
+
+# Fuente para texto
+fuente = pygame.font.Font(None, 60)
+
+# === CONFIGURACIÓN LLM7 API ===
+client = openai.OpenAI(
+    base_url="https://api.llm7.io/v1",
+    api_key="unused"  # O obtén una key gratis en https://token.llm7.io/ para mejores límites
+)
+
+def dibujar_tablero():
+    pantalla.fill(BLANCO)
+    # Dibujar líneas verticales
+    pygame.draw.line(pantalla, NEGRO, (TAM_CASILLA, 0), (TAM_CASILLA, ALTO), LINEA_ANCHO)
+    pygame.draw.line(pantalla, NEGRO, (2 * TAM_CASILLA, 0), (2 * TAM_CASILLA, ALTO), LINEA_ANCHO)
+    # Dibujar líneas horizontales
+    pygame.draw.line(pantalla, NEGRO, (0, TAM_CASILLA), (ANCHO, TAM_CASILLA), LINEA_ANCHO)
+    pygame.draw.line(pantalla, NEGRO, (0, 2 * TAM_CASILLA), (ANCHO, 2 * TAM_CASILLA), LINEA_ANCHO)
+
+
+def dibujar_fichas():
+    for fila in range(3):
+        for col in range(3):
+            if tablero[fila][col] == "X":
+                texto = fuente.render("X", True, ROJO)
+                pantalla.blit(texto, (col * TAM_CASILLA + 60, fila * TAM_CASILLA + 40))
+            elif tablero[fila][col] == "O":
+                texto = fuente.render("O", True, AZUL)
+                pantalla.blit(texto, (col * TAM_CASILLA + 60, fila * TAM_CASILLA + 40))
+
+
+def verificar_ganador():
+    # Revisar filas y columnas
+    for i in range(3):
+        if tablero[i][0] == tablero[i][1] == tablero[i][2] and tablero[i][0] is not None:
+            return tablero[i][0]
+        if tablero[0][i] == tablero[1][i] == tablero[2][i] and tablero[0][i] is not None:
+            return tablero[0][i]
+    # Revisar diagonales
+    if tablero[0][0] == tablero[1][1] == tablero[2][2] and tablero[0][0] is not None:
+        return tablero[0][0]
+    if tablero[0][2] == tablero[1][1] == tablero[2][0] and tablero[0][2] is not None:
+        return tablero[0][2]
+    
+    # Verificar empate
+    for fila in range(3):
+        for col in range(3):
+            if tablero[fila][col] is None:
+                return None  # Todavía hay movimientos posibles
+    return "Empate"
+
+
+def mostrar_mensaje(mensaje):
+    pantalla.fill(BLANCO)
+    texto = fuente.render(mensaje, True, NEGRO)
+    rect = texto.get_rect(center=(ANCHO // 2, ALTO // 2))
+    pantalla.blit(texto, rect)
+    pygame.display.flip()
+    pygame.time.wait(3000)
+
+
+def tablero_a_texto():
+    """Convierte el tablero a texto para enviar a la IA"""
+    texto = ""
+    for fila in range(3):
+        for col in range(3):
+            if tablero[fila][col] is None:
+                texto += "_"
+            else:
+                texto += tablero[fila][col]
+            if col < 2:
+                texto += " "
+        if fila < 2:
+            texto += "\n"
+    return texto
+
+
+def pedir_jugada_ia():
+    """Pide a la IA de LLM7 que haga una jugada usando la nueva configuración"""
+    
+    tablero_actual = tablero_a_texto()
+    
+    prompt = f"""Eres un jugador experto de 3 en raya (Tic-Tac-Toe). 
+Juegas como 'O' contra un humano que juega como 'X'.
+
+Tablero actual (coordenadas de 0 a 2):
+{tablero_actual}
+
+INSTRUCCIONES IMPORTANTES:
+- Responde SOLO con dos números separados por coma
+- Formato: fila,columna
+- Ejemplo: 0,1 para fila 0, columna 1
+- Ejemplo: 2,0 para fila 2, columna 0
+- NO uses texto adicional, paréntesis o corchetes
+- Las coordenadas van de 0 a 2
+
+Tu jugada:"""
+
+    try:
+        print("Consultando a la IA LLM7...")
+        
+        response = client.chat.completions.create(
+            model="mistral-small-3.1-24b-instruct-2503",
+            messages=[
+                {
+                    "role": "system", 
+                    "content": "Eres un jugador experto de 3 en raya. Responde ÚNICAMENTE con coordenadas en formato 'fila,columna'. Ejemplo: '1,2'"
+                },
+                {
+                    "role": "user", 
+                    "content": prompt
+                }
+            ],
+            max_tokens=10,
+            temperature=0.1
+        )
+        
+        texto_jugada = response.choices[0].message.content.strip()
+        print(f"IA LLM7 respondió: '{texto_jugada}'")
+        
+        # Intentar parsear la respuesta
+        try:
+            # Limpiar el texto y extraer números
+            texto_limpio = texto_jugada.replace("(", "").replace(")", "").replace("[", "").replace("]", "")
+            partes = texto_limpio.split(",")
+            
+            if len(partes) >= 2:
+                fila = int(partes[0].strip())
+                col = int(partes[1].strip())
+                print(f"Jugada parseada: ({fila}, {col})")
+                return fila, col
+            else:
+                print("Error: La respuesta no tiene el formato esperado")
+                return None
+                
+        except Exception as e:
+            print(f"Error parseando la respuesta: {e}")
+            return None
+            
+    except Exception as e:
+        print(f"Error llamando a la API de LLM7: {e}")
+        return None
+
+
+def jugada_automatica():
+    """Jugada automática inteligente si la IA falla"""
+    # Primero, buscar victoria
+    for fila in range(3):
+        for col in range(3):
+            if tablero[fila][col] is None:
+                tablero[fila][col] = "O"
+                if verificar_ganador() == "O":
+                    tablero[fila][col] = None
+                    return fila, col
+                tablero[fila][col] = None
+    
+    # Luego, bloquear al jugador
+    for fila in range(3):
+        for col in range(3):
+            if tablero[fila][col] is None:
+                tablero[fila][col] = "X"
+                if verificar_ganador() == "X":
+                    tablero[fila][col] = None
+                    return fila, col
+                tablero[fila][col] = None
+    
+    # Priorizar el centro
+    if tablero[1][1] is None:
+        return 1, 1
+    
+    # Priorizar esquinas
+    esquinas = [(0,0), (0,2), (2,0), (2,2)]
+    for fila, col in esquinas:
+        if tablero[fila][col] is None:
+            return fila, col
+    
+    # Cualquier movimiento disponible
+    for fila in range(3):
+        for col in range(3):
+            if tablero[fila][col] is None:
+                return fila, col
+    
+    return 0, 0
+
+
+# Bucle principal
+ejecutando = True
+dibujar_tablero()
+turno_ia = False
+
+while ejecutando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            ejecutando = False
+
+        if evento.type == pygame.MOUSEBUTTONDOWN and jugador == "X" and not turno_ia:
+            x, y = evento.pos
+            fila = y // TAM_CASILLA
+            col = x // TAM_CASILLA
+
+            if 0 <= fila < 3 and 0 <= col < 3 and tablero[fila][col] is None:
+                tablero[fila][col] = "X"
+                print(f"Jugador juega en: ({fila}, {col})")
+                
+                ganador = verificar_ganador()
+                
+                if ganador:
+                    dibujar_tablero()
+                    dibujar_fichas()
+                    if ganador == "Empate":
+                        mostrar_mensaje("¡Empate!")
+                    else:
+                        mostrar_mensaje(f"¡Ganó {ganador}!")
+                    # Reiniciar juego
+                    tablero = [[None for _ in range(3)] for _ in range(3)]
+                    jugador = "X"
+                    turno_ia = False
+                else:
+                    jugador = "O"
+                    turno_ia = True
+
+    # Turno de la IA
+    if jugador == "O" and turno_ia:
+        print("\n--- Turno de la IA ---")
+        jugada = pedir_jugada_ia()
+        
+        if jugada is None:
+            print("La IA no respondió, usando jugada automática")
+            jugada = jugada_automatica()
+        
+        fila, col = jugada
+        
+        # Validar jugada
+        if 0 <= fila < 3 and 0 <= col < 3 and tablero[fila][col] is None:
+            tablero[fila][col] = "O"
+            print(f"IA juega en: ({fila}, {col})")
+            
+            ganador = verificar_ganador()
+            
+            if ganador:
+                dibujar_tablero()
+                dibujar_fichas()
+                if ganador == "Empate":
+                    mostrar_mensaje("¡Empate!")
+                else:
+                    mostrar_mensaje(f"¡Ganó {ganador}!")
+                # Reiniciar juego
+                tablero = [[None for _ in range(3)] for _ in range(3)]
+                jugador = "X"
+            else:
+                jugador = "X"
+        else:
+            print("Jugada inválida de la IA, usando automática")
+            fila, col = jugada_automatica()
+            tablero[fila][col] = "O"
+            jugador = "X"
+        
+        turno_ia = False
+
+    dibujar_tablero()
+    dibujar_fichas()
+    pygame.display.flip()
+
+pygame.quit()
+sys.exit()
