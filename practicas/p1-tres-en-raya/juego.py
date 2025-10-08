@@ -1,22 +1,7 @@
-# Juego 3 en raya en consola (con tablero guía 1-9)
+import tkinter as tk
+from tkinter import messagebox
 
-def imprimir_tablero(tablero):
-    print("\n")
-    for i, fila in enumerate(tablero):
-        print("  " + "  |  ".join(fila))
-        if i < 2:
-            print("-----+-----+-----")
-    print("\n")
-
-def imprimir_tablero_guia():
-    print("Tablero guía (elige un número del 1 al 9):\n")
-    guia = [[str(i + j*3 + 1) for i in range(3)] for j in range(3)]
-    for i, fila in enumerate(guia):
-        print("  " + "  |  ".join(fila))
-        if i < 2:
-            print("-----+-----+-----")
-    print("\n")
-
+# --- Lógica del juego ---
 def hay_ganador(tablero, jugador):
     # Revisar filas
     for fila in tablero:
@@ -36,46 +21,57 @@ def hay_ganador(tablero, jugador):
 def tablero_lleno(tablero):
     return all(celda != " " for fila in tablero for celda in fila)
 
-def jugar():
-    tablero = [[" " for _ in range(3)] for _ in range(3)]
-    jugador_actual = "X"
+# --- Interfaz gráfica ---
+class TresEnRaya:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("3 en Raya")
+        self.jugador_actual = "X"
+        self.tablero = [[" " for _ in range(3)] for _ in range(3)]
+        self.botones = [[None for _ in range(3)] for _ in range(3)]
+        self.crear_tablero()
 
-    imprimir_tablero_guia()  # Mostrar guía al inicio
+    def crear_tablero(self):
+        for fila in range(3):
+            for col in range(3):
+                boton = tk.Button(
+                    self.root,
+                    text=" ",
+                    font=("Arial", 24),
+                    width=5,
+                    height=2,
+                    command=lambda f=fila, c=col: self.jugar(f, c)
+                )
+                boton.grid(row=fila, column=col)
+                self.botones[fila][col] = boton
 
-    while True:
-        imprimir_tablero(tablero)
-        print(f"Turno del jugador {jugador_actual}")
-        print("Elige una casilla (1-9):")
+    def jugar(self, fila, col):
+        if self.tablero[fila][col] == " ":
+            self.tablero[fila][col] = self.jugador_actual
+            self.botones[fila][col].config(text=self.jugador_actual)
 
-        try:
-            movimiento = int(input("> ")) - 1
-            if movimiento < 0 or movimiento > 8:
-                print("Número inválido. Debe ser entre 1 y 9.")
-                continue
-        except ValueError:
-            print("Entrada inválida. Escribe un número del 1 al 9.")
-            continue
+            if hay_ganador(self.tablero, self.jugador_actual):
+                messagebox.showinfo("Fin del juego", f"¡Jugador {self.jugador_actual} gana!")
+                self.reiniciar()
+                return
 
-        fila = movimiento // 3
-        col = movimiento % 3
+            if tablero_lleno(self.tablero):
+                messagebox.showinfo("Fin del juego", "¡Empate!")
+                self.reiniciar()
+                return
 
-        if tablero[fila][col] == " ":
-            tablero[fila][col] = jugador_actual
-        else:
-            print("Esa casilla ya está ocupada. Intenta otra vez.")
-            continue
+            # Cambiar turno
+            self.jugador_actual = "O" if self.jugador_actual == "X" else "X"
 
-        if hay_ganador(tablero, jugador_actual):
-            imprimir_tablero(tablero)
-            print(f"¡Jugador {jugador_actual} gana!")
-            break
+    def reiniciar(self):
+        self.tablero = [[" " for _ in range(3)] for _ in range(3)]
+        for fila in range(3):
+            for col in range(3):
+                self.botones[fila][col].config(text=" ")
+        self.jugador_actual = "X"
 
-        if tablero_lleno(tablero):
-            imprimir_tablero(tablero)
-            print("¡Empate!")
-            break
-
-        jugador_actual = "O" if jugador_actual == "X" else "X"
-
+# --- Ejecutar ---
 if __name__ == "__main__":
-    jugar()
+    root = tk.Tk()
+    juego = TresEnRaya(root)
+    root.mainloop()
