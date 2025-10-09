@@ -5,7 +5,63 @@ juego **Tres en Raya** desarrollado en Python usando la librería
 **Flet** para la interfaz gráfica.
 
 ------------------------------------------------------------------------
+## 🧪 Instalación paso a paso
 
+### 1. Crear y activar un entorno virtual
+
+En la terminal o consola:
+-Crear el entorno virtual
+
+```bash
+virtualenv -p python3 env
+```
+-Activar el entorno virtual en Windows(cmd)
+```bash
+C:\....\env\Scripts\activate
+#En caso de que no funcione solo ir hasta el \Scripts y ahi ejecutar
+activate
+```
+Activar el entorno virtual con (bash)
+```bash
+#ir hasta 
+/.../../env/Script
+#una vez en ese directorio ejecutar
+. activate
+```
+Verificar que estas dentro del entorno virtual
+```bash
+#al principio de toda la ruta debe mostrar
+(env)
+```
+### Instalar las librerias
+Primero instalaremos flet
+estar en el directorio
+```bash
+practicas/p1-tres-en-raya
+```
+ejecutar
+```bash
+pip install flet
+```
+Segundo instalar request
+estar en el directorio
+```bash
+practicas/p1-tres-en-raya
+```
+ejecutar
+```bash
+pip install request
+```
+### Ejecutar 
+Ahora se debe ejecutar el siguiente comando para que funciones 
+Estar en el directorio
+```bash
+/.../../practicas/p1-tres-en-raya
+```
+Ejecutar
+```bash
+python main.py
+```
 ## 🔹 Configuración inicial
 
 ``` python

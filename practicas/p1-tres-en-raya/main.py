@@ -1,4 +1,5 @@
 import flet as ft
+import requests
 
 def main(page: ft.Page):
     page.bgcolor = ft.Colors.BLACK
@@ -50,9 +51,137 @@ def main(page: ft.Page):
             celda.on_click = jugar
         page.update()
 
+    def bloquear_ganador(tablero):
+    # Combinaciones ganadoras posibles
+        combinaciones_ganadoras = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Filas
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Columnas
+            [0, 4, 8], [2, 4, 6]              # Diagonales
+        ]
+    
+        for combinacion in combinaciones_ganadoras:
+            c1, c2, c3 = combinacion
+            if tablero[c1] == 'X' and tablero[c2] == 'X' and tablero[c3] == '_':
+                return c3
+            if tablero[c1] == 'X' and tablero[c3] == 'X' and tablero[c2] == '_':
+                return c2
+            if tablero[c2] == 'X' and tablero[c3] == 'X' and tablero[c1] == '_':
+                return c1
+        return -1    
+
+    def obtener_movimiento_llm7(tablero, jugador_ia="O"):
+        url = "https://api.llm7.io/v1/chat/completions"
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer unused"
+        }
+
+        casilla_a_bloquear = bloquear_ganador(tablero)
+        if casilla_a_bloquear != -1:
+            return casilla_a_bloquear
+        # Representar el tablero en formato 3x3 legible
+        tablero_visual = (
+            f"{tablero[0]} | {tablero[1]} | {tablero[2]}\n"
+            f"{tablero[3]} | {tablero[4]} | {tablero[5]}\n"
+            f"{tablero[6]} | {tablero[7]} | {tablero[8]}"
+        )
+
+        prompt_sistema = (
+            "Eres una IA experta en el juego de tres en raya. "
+            "Tu única tarea es analizar el tablero y devolver el índice (de 0 a 8) "
+            "donde debe jugar el jugador 'O'. "
+            "Si el jugador 'X' está a punto de ganar, es decir, si tiene dos 'X' en una línea y la tercera casilla está vacía, "
+            "debes bloquear esa jugada colocando un 'O' en la casilla vacía. "
+            "Nunca debes dejar que el jugador 'X' gane en su próximo turno. "
+            "Si no hay una amenaza de victoria de 'X', puedes jugar en cualquier casilla vacía, pero siempre con el objetivo de bloquear cualquier jugada futura. "
+            "Los índices se distribuyen así:\n"
+            "0 | 1 | 2\n3 | 4 | 5\n6 | 7 | 8\n"
+            "Devuelve solo el número (0 a 8) y nada más."
+        )
+
+        prompt_usuario = (
+            f"Este es el tablero actual:\n{tablero_visual}\n"
+            f"¿Dónde debe jugar el jugador '{jugador_ia}'? Solo responde con el número (0 a 8)."
+        )
+
+        data = {
+            "model": "mistral-small-3.1-24b-instruct-2503",
+            "messages": [
+                {"role": "system", "content": prompt_sistema},
+                {"role": "user", "content": prompt_usuario}
+            ]
+        }
+
+        try:
+            response = requests.post(url, headers=headers, json=data)
+            response.raise_for_status()
+
+            respuesta_ia = response.json()
+            texto = respuesta_ia["choices"][0]["message"]["content"].strip()
+            movimiento = int("".join(filter(str.isdigit, texto)))
+
+            if 0 <= movimiento <= 8 and tablero[movimiento] == "_":
+                return movimiento
+            else:
+                print("Índice inválido, usando primer espacio disponible.")
+        except Exception as e:
+            print(f"Error al llamar a LLM7.io: {e}")
+
+    # Fallback
+        for i, valor in enumerate(tablero):
+            if valor == "_":
+                return i
+        return 0
+
+
+    def jugar_ia():
+        nonlocal jugador1
+
+        # 🧠 1. Obtenemos el estado del tablero como lista de 9 strings
+        tablero = [celda.content.value if celda.content.value != "" else "_" for celda in celdas]
+
+        # 🧠 2. Llamamos a la IA
+        indice_ia = obtener_movimiento_llm7(tablero, jugador_ia="O")
+
+        # ✅ 3. Ejecutamos la jugada
+        celda = celdas[indice_ia]
+        celda.content.value = "O"
+        celda.content.color = ft.Colors.RED_ACCENT_700
+        celda.on_click = None
+
+        # 🔁 4. Verificamos estado del juego
+        if not verificar_ganador():
+            if not verificar_empate():
+                jugador1 = "X"
+                estado_juego_texto.value = "Turno del jugador X"
+
+        page.update()
+
 
     def jugar(e):
         nonlocal jugador1
+
+        # 🚫 Ignorar clics si es el turno de la IA
+        if jugador1 != "X":
+            return
+
+        clicked_text = e.control.content
+        if clicked_text.value == "":
+            clicked_text.value = jugador1
+            clicked_text.color = ft.Colors.CYAN_ACCENT_700
+
+            e.control.on_click = None
+
+            if not verificar_ganador():
+                if not verificar_empate():
+                    jugador1 = "O"
+                    estado_juego_texto.value = "Turno del jugador O"
+                    page.update()
+                    jugar_ia()  # llama directamente a la IA
+
+        page.update()
+        """nonlocal jugador1
         clicked_text = e.control.content
         if clicked_text.value == "":
             clicked_text.value = jugador1
@@ -64,7 +193,11 @@ def main(page: ft.Page):
                 if not verificar_empate():
                     jugador1 = "O" if jugador1 == "X" else "X"
                     estado_juego_texto.value = f"Turno del jugador {jugador1}"
-            page.update()
+                    page.update()
+                    if jugador1 == "O":
+                        jugar_ia()
+            page.update()"""
+    
 
     titulo = ft.Text("TRES EN RAYA", color=ft.Colors.GREEN, size=50, font_family="Times New Roman")
 
