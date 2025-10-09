@@ -64,9 +64,9 @@ nltk.download('averaged_perceptron_tagger_esp')
 - `nltk.pos_tag()` para etiquetado POS
 
 3. Cálculos requeridos:
-- ** Tokens: ** Conteo de todos los elementos tokenizados
-- ** Tipos: ** Conteo de elementos únicos (case-sensitive)
-- ** Ratio TT: ** total_tipos / total_tokens (redondeado a 3 decimales)
+- **Tokens:** Conteo de todos los elementos tokenizados
+- **Tipos:** Conteo de elementos únicos (case-sensitive)
+- **Ratio TT:** total_tipos / total_tokens (redondeado a 3 decimales)
 
 #### Codigo Base para implementar
 ```
