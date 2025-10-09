@@ -9,7 +9,7 @@
 ## Instrucciones tecnicas
 1. Crear una rama 
 ```
-git checkout -b QuelaliGaston/ExamenParcial
+git checkout -b VallejosOliver/ExamenParcial
 ```
 2. Subir el cuaderno (archivo) con el nombre `ExamenParcial.ipynb` dentro de la carpeta `examen-parcila` en tu rama.
 
