@@ -6,6 +6,13 @@
 **Duración estimada:** 45 minutos  
 **Dificultad:** Intermedia
 
+## Instrucciones tecnicas
+1. Crear una rama 
+```
+git checkout -b QuelaliGaston/ExamenParcial
+```
+2. Subir el cuaderno (archivo) con el nombre `ExamenParcial.ipynb` dentro de la carpeta `examen-parcila` en tu rama.
+
 ## Instrucciones Generales
 1. Implemente la función solicitada en Google Colab
 2. Use únicamente las bibliotecas especificadas
