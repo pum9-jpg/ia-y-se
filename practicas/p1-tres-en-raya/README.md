@@ -50,7 +50,7 @@ practicas/p1-tres-en-raya
 ```
 ejecutar
 ```bash
-pip install request
+pip install requests
 ```
 ### Ejecutar 
 Ahora se debe ejecutar el siguiente comando para que funciones 

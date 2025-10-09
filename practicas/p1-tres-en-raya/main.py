@@ -138,19 +138,15 @@ def main(page: ft.Page):
     def jugar_ia():
         nonlocal jugador1
 
-        # 🧠 1. Obtenemos el estado del tablero como lista de 9 strings
         tablero = [celda.content.value if celda.content.value != "" else "_" for celda in celdas]
 
-        # 🧠 2. Llamamos a la IA
         indice_ia = obtener_movimiento_llm7(tablero, jugador_ia="O")
 
-        # ✅ 3. Ejecutamos la jugada
         celda = celdas[indice_ia]
         celda.content.value = "O"
         celda.content.color = ft.Colors.RED_ACCENT_700
         celda.on_click = None
 
-        # 🔁 4. Verificamos estado del juego
         if not verificar_ganador():
             if not verificar_empate():
                 jugador1 = "X"
@@ -162,7 +158,7 @@ def main(page: ft.Page):
     def jugar(e):
         nonlocal jugador1
 
-        # 🚫 Ignorar clics si es el turno de la IA
+        #Ignorar clics si es el turno de la IA
         if jugador1 != "X":
             return
 
