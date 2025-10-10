@@ -11,7 +11,7 @@
 ```
 git checkout -b QuelaliGaston/ExamenParcial
 ```
-2. Subir el cuaderno (archivo) con el nombre `ExamenParcial.ipynb` dentro de la carpeta `examen-parcila` en tu rama.
+2. Subir el cuaderno (archivo) con el nombre `ExamenParcial.ipynb` dentro de la carpeta `examen-parcial` en tu rama.
 
 ## Instrucciones Generales
 1. Implemente la función solicitada en Google Colab
