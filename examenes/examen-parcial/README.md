@@ -1,85 +1,110 @@
-# Examen: Análisis Morfológico con NLTK
+# 📌 Examen Parcial - Análisis Morfológico con NLTK
 
-## Información del Examen
-**Materia:** Procesamiento de Lenguaje Natural  
-**Herramientas:** Python, NLTK, Google Colab  
-**Duración estimada:** 45 minutos  
-**Dificultad:** Intermedia
+## 🎯 Objetivo
+Implementar una función en Python llamada `analisis_morfologico(oracion)` que procese una oración en español y retorne un análisis morfológico básico.
 
-## Instrucciones tecnicas
-1. Crear una rama 
+---
+
+## 🧠 ¿Qué realiza el programa?
+
+Dada una oración en español, la función devuelve:
+
+| Clave          | Descripción |
+|----------------|------------|
+| `total_tokens` | Número total de tokens generados (palabras + signos) |
+| `total_tipos`  | Cantidad de palabras únicas (vocabulario) |
+| `ratio_tt`     | Relación tipos/tokens (diversidad léxica), redondeada a 3 decimales |
+| `pos_tags`     | Lista de tuplas con la forma `(palabra, etiqueta_POS)` |
+
+---
+
+## 📦 Dependencias requeridas
+
+Este programa utiliza la librería **NLTK** (Natural Language Toolkit).  
+En caso de ejecutarlo en **Google Colab**, asegúrate de haber instalado y descargado los recursos necesarios:
+
+```bash
+!pip install -U nltk
 ```
-git checkout -b QuelaliGaston/ExamenParcial
+
+Luego, en Python:
+
+```python
+import nltk
+nltk.download('punkt_tab')
+nltk.download('punkt')
+nltk.download('universal_tagset')
 ```
-2. Subir el cuaderno (archivo) con el nombre `ExamenParcial.ipynb` dentro de la carpeta `examen-parcila` en tu rama.
 
-## Instrucciones Generales
-1. Implemente la función solicitada en Google Colab
-2. Use únicamente las bibliotecas especificadas
-3. Comente su código adecuadamente
-4. Pruebe con los casos de prueba proporcionados
-5. Prepare un breve análisis de los resultados
+---
 
-## Ejercicio practico: Análisis Morfológico
+## 🧩 Descripción del funcionamiento
 
-### Enunciado Completo
-Implemente una función `analisis_morfologico(oracion)` que reciba una cadena de texto en español y retorne un diccionario con la siguiente información:
+### 1. **Tokenización**
+Se utiliza `nltk.word_tokenize` para dividir la oración en palabras y signos de puntuación.  
+El tokenizador está configurado para trabajar con español (`language='spanish'`).
 
-- **total_tokens**: número total de tokens en la oración
-- **total_tipos**: número de tipos únicos (vocabulario)
-- **ratio_tt**: ratio tipo-token (tipos/tokens) redondeado a 3 decimales
-- **pos_tags**: lista de tuplas (palabra, etiqueta_POS) para cada token
+### 2. **Etiquetado morfológico (rule-based)**
+Se aplica un conjunto manual de reglas para asignar etiquetas POS simplificadas.  
+Ejemplos de reglas:
+- `el`, `la`, `los` → `DET` (determinante)
+- `y`, `pero` → `CCONJ` (conjunción)
+- `de`, `por`, `en` → `ADP` (adposición/preposición)
+- Palabras que terminan en `-mente` → `ADV` (adverbio)
+- Lista manual de verbos comunes → `VERB`
+- Signos como `, . ! ?` → `PUNCT`
+- Todo lo demás → `NOUN`
 
-### Ejemplo de Entrada y Salida
+> ⚠ **Nota importante:** Este analizador es **básico y académico**. No reemplaza un etiquetador profesional entrenado como *spaCy*.
 
-#### Entrada:
+---
+
+## 📊 Cálculo estadístico
+
+- Los **tokens totales** incluyen cada aparición.
+- Los **tipos únicos** eliminan repeticiones.
+- El **ratio tipos/tokens (TTR)** permite estimar la diversidad léxica:
+
+\[
+	ext{TTR} = rac{	ext{tipos únicos}}{	ext{tokens totales}}
+\]
+
+Ejemplo: Si hay 12 tokens y 8 son únicos → `TTR = 0.666`
+
+---
+
+## ▶️ Ejemplo de uso
+
 ```python
 oracion_ejemplo = "El gato negro salta alto y el perro corre rápido por el parque."
+resultado = analisis_morfologico(oracion_ejemplo)
+print(resultado)
 ```
 
-#### Salida esperada:
+**Salida esperada (estructura):**
+
 ```python
 {
-    'total_tokens': 13,
-    'total_tipos': 11,
-    'ratio_tt': 0.846,
-    'pos_tags': [
-        ('El', 'DET'), ('gato', 'NOUN'), ('negro', 'ADJ'), 
-        ('salta', 'VERB'), ('alto', 'ADV'), ('y', 'CCONJ'),
-        ('el', 'DET'), ('perro', 'NOUN'), ('corre', 'VERB'),
-        ('rápido', 'ADJ'), ('por', 'ADP'), ('el', 'DET'),
-        ('parque', 'NOUN'), ('.', 'PUNCT')
-    ]
+  'total_tokens': ...,
+  'total_tipos': ...,
+  'ratio_tt': ...,
+  'pos_tags': [
+      ('El', 'DET'),
+      ('gato', 'NOUN'),
+      ('negro', 'ADJ'),
+      ...
+  ]
 }
 ```
 
-1. Preparacion de entorno
-```
-import nltk
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger_esp')
-```
-2. Funciones a utilizar:
-- `nltk.word_tokenize()` para tokenización en español
-- `nltk.pos_tag()` para etiquetado POS
+---
 
-3. Cálculos requeridos:
-- **Tokens:** Conteo de todos los elementos tokenizados
-- **Tipos:** Conteo de elementos únicos (case-sensitive)
-- **Ratio TT:** total_tipos / total_tokens (redondeado a 3 decimales)
+## 🚀 Posibles mejoras futuras
 
-#### Codigo Base para implementar
-```
-def analisis_morfologico(oracion):
-    """
-    Realiza análisis morfológico completo de una oración en español.
-    
-    Args:
-        oracion (str): Texto en español a analizar
-    
-    Returns:
-        dict: Diccionario con tokens, tipos, ratio TT y POS tags
-    """
-    # Implementar aquí la solución
-    pass
-```
+- Integrar lematización (forma base de palabras).
+- Sustituir reglas manuales por un modelo entrenado en español (**spaCy**, **Stanza**, etc.)
+- Exportar resultados en tabla o CSV.
+- Visualizar los tokens y etiquetas en una tabla bonita (pandas + display en Colab).
+
+---
+
