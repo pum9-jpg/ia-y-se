@@ -1,0 +1,60 @@
+# 🚲 Sistema Experto para Diagnóstico de Bicicletas  
+*Un mini-proyecto didáctico que compara dos formas clásicas de representar conocimiento: Reglas de Producción vs. Marcos (Frames).*
+
+---
+
+##  ¿Qué incluye?
+| Archivo | Descripción |
+|---------|-------------|
+| `reglas_produccion.py` | Motor que diagnostica y sugiere soluciones mediante **reglas IF-THEN**. |
+| `frames.py` | Misma tarea pero representando los problemas como **objetos con atributos (frames)**. |
+
+Ambos archivos son independientes y se pueden ejecutar por separado.
+
+---
+
+##  Cómo ejecutar en 30 segundos
+1. Clona o descarga la carpeta del proyecto.  
+2. Entra en la carpeta del proyecto:
+   ```bash
+   cd diagnostico_bicicletas
+
+   Opción A – Reglas de Producción:
+bash
+Copy
+python reglas_produccion.py
+Salida ejemplo:
+Copy
+- Usando Reglas de Producción -
+Diagnóstico encontrado: diagnostico_cadena_desgastada
+Solución encontrada: solucion_reemplazar_cadena
+Opción B – Marcos (Frames):
+bash
+Copy
+python frames.py
+Salida ejemplo:
+Copy
+- Usando Marcos (Frames) -
+Problema identificado: cadena_desgastada
+  ➔ Es un tipo de: problema_de_transmision
+  ➔ La solución es: reemplazar_cadena
+  ➔ Necesitarás: cortacadenas, cadena_nueva
+No necesitas instalar dependencias externas; solo Python ≥ 3.7.
+    
+    Comparación rápida de enfoques
+Table
+Copy
+Aspecto	Reglas de Producción	Marcos (Frames)
+Estilo	Lógica IF-THEN	Orientado a objetos
+Extensibilidad	Añadir nueva regla al diccionario	Añadir nuevo frame
+Lectura	Muy intuitiva para procesos paso a paso	Natural para describir "cosas"
+Consultas complejas	Requiere más código	Fácil acceso a slots (atributos)
+
+
+Ejemplo de pregunta	¿Qué diagnóstico/solución tengo?	¿Qué herramientas necesito? ¿De qué tipo es el problema?
+📝 Conclusión personal
+Ambas representaciones tienen el mismo poder expresivo ante problemas sencillos, pero escalan de forma distinta:
+Reglas brillan cuando el conocimiento es procedural (pasos, flujos, decisiones lineales).
+Frames ganan cuando importa la estructura de los objetos: atributos, relaciones, herencia, búsquedas flexiles.
+En la práctica los sistemas reales mezclan ambas: reglas para razonar y frames para organizar la información.
+Este pequeño proyecto demuestra que, con unas pocas líneas de Python, puedes implementar y comparar ambos paradigmas sin librerías externas y entender de primera mano por qué la elección de representación importa.
