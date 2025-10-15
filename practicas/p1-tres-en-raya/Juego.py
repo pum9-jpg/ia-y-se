@@ -4,9 +4,9 @@ from tkinter import messagebox
 class TresEnRaya:
     def __init__(self, root):
         self.root = root
-        self.root.title("3 en Raya - Jugador vs Computadora (X = PC, O = Humano)")
+        self.root.title("3 en Raya - Jugador vs Jugador")
 
-        self.turno = "O"  # Empieza el jugador humano
+        self.turno = "X"  # Empieza el jugador X
         self.botones = [[None for _ in range(3)] for _ in range(3)]
 
         self.crear_interfaz()
@@ -23,36 +23,16 @@ class TresEnRaya:
 
     def presionar(self, fila, col):
         boton = self.botones[fila][col]
-        if boton["text"] == "" and self.turno == "O":
-            boton["text"] = "O"
+        if boton["text"] == "":
+            boton["text"] = self.turno
             if self.verificar_ganador():
-                messagebox.showinfo("Juego terminado", "¡Ganaste! 🎉")
+                messagebox.showinfo("Juego terminado", f"¡Jugador {self.turno} ha ganado! 🎉")
                 self.reiniciar_juego()
-                return
             elif self.empate():
                 messagebox.showinfo("Juego terminado", "¡Empate!")
                 self.reiniciar_juego()
-                return
             else:
-                self.turno = "X"
-                self.jugada_pc()
-
-    def jugada_pc(self):
-        for f in range(3):
-            for c in range(3):
-                if self.botones[f][c]["text"] == "":
-                    self.botones[f][c]["text"] = "X"
-                    if self.verificar_ganador():
-                        messagebox.showinfo("Juego terminado", "¡La computadora ha ganado! 🤖")
-                        self.reiniciar_juego()
-                        return
-                    elif self.empate():
-                        messagebox.showinfo("Juego terminado", "¡Empate!")
-                        self.reiniciar_juego()
-                        return
-                    else:
-                        self.turno = "O"
-                    return
+                self.turno = "O" if self.turno == "X" else "X"
 
     def verificar_ganador(self):
         for i in range(3):
@@ -79,7 +59,7 @@ class TresEnRaya:
         for fila in self.botones:
             for boton in fila:
                 boton["text"] = ""
-        self.turno = "O"
+        self.turno = "X"
 
 if __name__ == "__main__":
     root = tk.Tk()
