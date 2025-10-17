@@ -25,58 +25,7 @@ Esta unidad introduce los fundamentos de la IA, sus diferencias con la computaci
 Esta unidad se centra en cómo representar formalmente el conocimiento humano para que una computadora pueda procesarlo.  
 Se introducen la lógica proposicional y la lógica de predicados como bases formales, junto con la **ingeniería del conocimiento**, disciplina que permite capturar, estructurar y mantener la información proveniente de expertos humanos.
 
-```mermaid
-mindmap
-  root((Unidad 2: La Representación del Conocimiento))
-    Introducción
-      Desafío central de la IA: convertir conocimiento humano en formato procesable
-      Campo clave: Ingeniería del Conocimiento
-    Bases formales de la representación
-      Necesidad de estructura formal y lógica
-      Lógica Proposicional
-        Trabaja con proposiciones verdaderas o falsas
-        Usa conectores (Y, O, NO, IMPLICA)
-        Limitación: no representa relaciones u objetos individuales
-      Lógica de Predicados (Primer Orden)
-        Representa objetos, propiedades y relaciones
-        Usa cuantificador ∀ (para todo)
-        Usa cuantificador ∃ (existe)
-        Ejemplo: "Para todo x, si x es un hombre, entonces x es mortal."
-        Ventaja: mayor expresividad y realismo
-    Ingeniería del Conocimiento
-      Definición
-        Disciplina que construye sistemas basados en conocimiento
-        Combina informática, ciencia cognitiva e interacción humana
-      Etapas del proceso
-        Adquisición del conocimiento
-        Representación formal
-        Validación de consistencia
-        Inferencia lógica
-        Mantenimiento y actualización
-    Trabajo del Ingeniero del Conocimiento
-      Función
-        Intermediario entre el experto humano y el sistema
-      Responsabilidades
-        Selección del problema adecuado
-        Interacción con el experto
-        Diseño de la base de conocimiento
-        Implementación del prototipo
-        Refinamiento y validación del sistema
-    Estrategias de adquisición del conocimiento
-      Entrevistas estructuradas y no estructuradas
-      Análisis de casos
-      Observación directa del experto
-      Prototipado rápido
-      Mapas conceptuales
-    Cuello de botella en la adquisición del conocimiento
-      Dificultades principales
-        Conocimiento tácito (intuitivo y no verbalizable)
-        Limitaciones o falta de cooperación del experto
-        Complejidad y dinamismo del conocimiento
-        Barreras de comunicación técnica
-      Consecuencia
-        Proceso intensivo en tiempo y recursos
-
+[![](https://mermaid.ink/img/pako:eNqNVs1u20YQfpUBTzKgGpZk1Ypuju0CAuxYSJsCLXwZkSN5DXKX2V0KVgIDAXrpa_jYQw5FHkFv0ifpt0tRlBQ3zcEwuZy_b-abb_UxSU0myTgplM4KLu80kTXGdzrvtMo4o_6YrpneSmnFifacqvUXTZnkdGG0SVWhcGqOjoIj0UR7a7IqjVb1EdGlOJ6vPxtKYWo5hzflTJPzMaVGL8V6ZcPTNhrdVwVrQ6JpbmzBOCmtSRFmlksT9YKLEiFzXsoYeReildj1Z_6qttrhNTtxdbgcD3UJdh9WE_qNIFdEDzNx3lapryxvvGlF-frLQqXc2F_XrzS1pjROpcpozpuPRL9YnvEDB4gBR2OCKoAdWcSyI0Nzzh271u2diy6SeoMiqfNbl2679AZ_k5vp9eTi_Ki1vQbWDYgxoXMtMDzmvElXkZk9iDeOMGy1VFkVenGIApinVjI8ZrDsTK0qxNKtzUTvZGwZ0QTtRnBKAiKHJrWJDzBVrL2ax_iW_vnzE3VKRne9yczRt03_oI48Kudlx-7qQYoyN2O6S6ZNGHrsklP0SAG0pntTzKx0KbBBY7T1h8JYz_nxXdLG-jXgeeAxFbxCQnkMGEOjQIUAiHPlCtNQ_f8oF5g_V1rtcQuHyqWqzJVmel9JGHFg2EpQMZAV4MKMXew9-J--EBXcB6Dgr3Sg5PrZo0NdSmGVqkCahVZeLZkEFh70qvexXqsta688l-xi7fV27SQ4z95Xyql22V-u41AW6gXZ6Scalm0lI0INGEOVrdFEz8XWlR_sFdEN5o8ub2RhRYxFRMwPu_tar5eJZTZDMf85kp8qfTCPSWhRAcKzVUFzvMXS52H4UKatFq3C2WZCje9bcSUg8UwFmNku0X-WXNK2fWgwpKtgghVInZmD9M2EgkS0ufc4I-u_zUa2wA_Z9POFoUywDlLsazXye-NVuTc7cJO3nV3ujeoA6hUYyl4WKvIFIL6DHVehkUtEgU-roRkHaQjavnvU-Jzr9TNWTMUsKTuz_XI7c2KXTX3KQhXrtTto1XQDFC0mu34uVdvqm0j3NChA6XeU76KSPI-tnRmPRw57l_P3obwM6lTlPmpeaRXIVe6KKu2RkPz6OVX438FeVmFHTd0NXASzyGuw5AVZj-odb4iIGpWYMpBmW9pXhIFCgAUPG-XK4qQhXd_Y5ddsbbyJYvyigm5tEvj1X6neWUsgcmDxwRpPaw2JioM1X8br2ysJt3TQzrSycZ5JN1lYlSVjzF-6Ce6WgsNr8jHEukv8Pch7lwQ9z2TO6G1Q6Ce4lax_N6ZoPK2pFvfNS1VmIOil4oXl1kI0LtcLU2mfjIcxQDL-mDwm4x8Gg-Hx2VlvMDo5OemdDs9edZMVjnv9k-PBWX846p-OBsNR76mbfIgpe8fD0ei0N-gPRsP-cPDq5MduAsnA1XxT_36KP6Oe_gVhcjaM?type=png)](https://mermaid.live/edit#pako:eNqNVs1u20YQfpUBTzKgGpZk1Ypuju0CAuxYSJsCLXwZkSN5DXKX2V0KVgIDAXrpa_jYQw5FHkFv0ifpt0tRlBQ3zcEwuZy_b-abb_UxSU0myTgplM4KLu80kTXGdzrvtMo4o_6YrpneSmnFifacqvUXTZnkdGG0SVWhcGqOjoIj0UR7a7IqjVb1EdGlOJ6vPxtKYWo5hzflTJPzMaVGL8V6ZcPTNhrdVwVrQ6JpbmzBOCmtSRFmlksT9YKLEiFzXsoYeReildj1Z_6qttrhNTtxdbgcD3UJdh9WE_qNIFdEDzNx3lapryxvvGlF-frLQqXc2F_XrzS1pjROpcpozpuPRL9YnvEDB4gBR2OCKoAdWcSyI0Nzzh271u2diy6SeoMiqfNbl2679AZ_k5vp9eTi_Ki1vQbWDYgxoXMtMDzmvElXkZk9iDeOMGy1VFkVenGIApinVjI8ZrDsTK0qxNKtzUTvZGwZ0QTtRnBKAiKHJrWJDzBVrL2ax_iW_vnzE3VKRne9yczRt03_oI48Kudlx-7qQYoyN2O6S6ZNGHrsklP0SAG0pntTzKx0KbBBY7T1h8JYz_nxXdLG-jXgeeAxFbxCQnkMGEOjQIUAiHPlCtNQ_f8oF5g_V1rtcQuHyqWqzJVmel9JGHFg2EpQMZAV4MKMXew9-J--EBXcB6Dgr3Sg5PrZo0NdSmGVqkCahVZeLZkEFh70qvexXqsta688l-xi7fV27SQ4z95Xyql22V-u41AW6gXZ6Scalm0lI0INGEOVrdFEz8XWlR_sFdEN5o8ub2RhRYxFRMwPu_tar5eJZTZDMf85kp8qfTCPSWhRAcKzVUFzvMXS52H4UKatFq3C2WZCje9bcSUg8UwFmNku0X-WXNK2fWgwpKtgghVInZmD9M2EgkS0ufc4I-u_zUa2wA_Z9POFoUywDlLsazXye-NVuTc7cJO3nV3ujeoA6hUYyl4WKvIFIL6DHVehkUtEgU-roRkHaQjavnvU-Jzr9TNWTMUsKTuz_XI7c2KXTX3KQhXrtTto1XQDFC0mu34uVdvqm0j3NChA6XeU76KSPI-tnRmPRw57l_P3obwM6lTlPmpeaRXIVe6KKu2RkPz6OVX438FeVmFHTd0NXASzyGuw5AVZj-odb4iIGpWYMpBmW9pXhIFCgAUPG-XK4qQhXd_Y5ddsbbyJYvyigm5tEvj1X6neWUsgcmDxwRpPaw2JioM1X8br2ysJt3TQzrSycZ5JN1lYlSVjzF-6Ce6WgsNr8jHEukv8Pch7lwQ9z2TO6G1Q6Ce4lax_N6ZoPK2pFvfNS1VmIOil4oXl1kI0LtcLU2mfjIcxQDL-mDwm4x8Gg-Hx2VlvMDo5OemdDs9edZMVjnv9k-PBWX846p-OBsNR76mbfIgpe8fD0ei0N-gPRsP-cPDq5MduAsnA1XxT_36KP6Oe_gVhcjaM)
 
 ##  Mapa 3: Los Sistemas Expertos, Definición y Conceptos
 
