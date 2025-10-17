@@ -1,0 +1,47 @@
+```mermaid
+mindmap
+  root((Representación del Conocimiento))
+
+    subtopic1Bases Formales
+      subtopic1.1(Lógica Proposicional)
+        subtopic1.1.1(Proposiciones: verdadero/falso)
+        subtopic1.1.2(Conectores lógicos: Y, O, NO, IMPLICA)
+        subtopic1.1.3(Ejemplo: Si hace sol Y es martes, voy al parque)
+        subtopic1.1.4(Limitación: no representa objetos ni relaciones)
+      subtopic1.2(Lógica de Predicados)
+        subtopic1.2.1(Más expresiva: objetos, propiedades, relaciones)
+        subtopic1.2.2(Usa predicados, variables, cuantificadores)
+        subtopic1.2.3(Ejemplo: "Para todo x, si x es hombre, entonces x es mortal")
+        subtopic1.2.4(Base formal para representación detallada)
+
+    subtopic2(Ingeniería del Conocimiento)
+      subtopic2.1(Definición)
+        subtopic2.1.1(Construcción y mantenimiento de sistemas basados en conocimiento)
+        subtopic2.1.2(Interdisciplinaria: informática, cognición, expertos)
+      subtopic2.2(Proceso General)
+        subtopic2.2.1(Adquisición: extraer conocimiento del experto)
+        subtopic2.2.2(Representación: elegir modelo formal)
+        subtopic2.2.3(Validación: comprobar consistencia y corrección)
+        subtopic2.2.4(Inferencia: diseñar motor de razonamiento)
+        subtopic2.2.5(Mantenimiento: actualizar base de conocimiento)
+
+    subtopic3(Trabajo del Ingeniero del Conocimiento)
+      subtopic3.1(Seleccionar problema adecuado)
+      subtopic3.2(Interactuar con expertos)
+      subtopic3.3(Diseñar y estructurar base de conocimiento)
+      subtopic3.4(Implementar prototipo)
+      subtopic3.5(Refinar y probar sistema)
+
+    subtopic4(Estrategias de Ingeniería del Conocimiento)
+      subtopic4.1(Entrevistas estructuradas y no estructuradas)
+      subtopic4.2(Análisis de casos)
+      subtopic4.3(Observación directa)
+      subtopic4.4(Prototipado rápido)
+      subtopic4.5(Mapas conceptuales)
+
+    subtopic5(Cuello de Botella)
+      subtopic5.1(Conocimiento tácito: difícil de verbalizar)
+      subtopic5.2(Limitaciones y resistencia del experto)
+      subtopic5.3(Complejidad y dinamismo del conocimiento)
+      subtopic5.4(Barreras de comunicación)
+      subtopic5.5(Desafío principal en Ingeniería del Conocimiento)
