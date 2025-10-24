@@ -44,6 +44,16 @@ for _ in range(5):
     print("Estado actual:", estado, "\n")
 ```
 
+# Ejemplo de salida esperada
+
+El agente está en B, el entorno es sucio
+Acción: limpiar
+Modelo interno: {'A': None, 'B': 'sucio'}
+Estado actual: {'A': 'limpio', 'B': 'limpio'}
+
+El agente está en A, el entorno es limpio
+Acción: detener (ambiente limpio)
+
 ## Observaciones
 
 - El agente recuerda estados previos, lo que le permite optimizar sus decisiones.

@@ -44,12 +44,22 @@ for _ in range(5):
     print("Modelo interno:", agente.modelo)
     print("Estado actual:", estado, "\n")
 ```
+# Ejemplo de salida esperada
+
+El agente está en la posición A y el estado es sucio
+Acción: limpiar
+Estado actual: {'A': 'limpio', 'B': 'sucio'}
+
+El agente está en la posición A y el estado es limpio
+Acción: moverse a B
+Estado actual: {'A': 'limpio', 'B': 'sucio'}
 
 ## Observaciones
 
 El agente no tiene memoria: 
-- **actúa solo según el estado actual, representando la forma más básica de inteligencia reactiva.**
-- **Útil para entornos simples y deterministas.**
+- Actua solo segun el estado actual, representando la forma mas basica de inteligencia reactiva.
+
+- Util para entornos simples y deterministas.
 
 ## Conclusión
 

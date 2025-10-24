@@ -66,5 +66,27 @@ resultado = sistema.razonar(hechos_iniciales)
 print("\nHechos Finales Deducidos:", resultado)
 ```
 
+# Ejemplo de salida esperada
+> INICIANDO DIAGNÓSTICO CASO 1 
+
+> Hecho añadido: 'problema_bateria_o_arranque' (Gracias a la regla: 'Regla 1: Problema de batería o motor de arranque')
+
+> Hecho añadido: 'diagnostico_bateria_descargada' (Gracias a la regla: 'Regla 3: Batería descargada confirmada')
+
+# Hechos Finales Deducidos:
+{'luces_debiles_o_muertas', 'coche_no_gira_llave',
+ 'problema_bateria_o_arranque', 'diagnostico_bateria_descargada'}
+Diagnóstico Final: 'diagnostico_bateria_descargada'
+
+# Observaciones
+
+- Se usa encadenamiento hacia adelante, comenzando con los hechos conocidos hasta llegar a nuevas conclusiones.
+
+- El sistema separa la base de conocimiento (reglas) del motor de inferencia, lo cual mejora la mantenibilidad.
+
+- Permite agregar nuevas reglas sin cambiar el código del motor.
+
+- La explicación del razonamiento se basa en el historial de reglas aplicadas.
+
 ## Conclusión
 El encadenamiento hacia adelante es ideal para diagnósticos determinísticos y sistemas expertos donde las relaciones causa-efecto están bien definidas, obteniendo explicaciones trazables, lo cual incrementa la confianza del usuario.

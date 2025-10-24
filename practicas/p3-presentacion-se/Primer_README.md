@@ -62,8 +62,9 @@ El usuario ingresa sus preferencias:
 > Enfoque Convencional: Te recomendamos un Frappuccino sin café.
 
 ## Observaciones
-Este método es funcional pero poco flexible.  
-Si se desea agregar nuevas condiciones o bebidas, se debe modificar directamente el código.
+- Este metodo es funcional pero poco flexible.  
+
+- Si se desea agregar nuevas condiciones o bebidas, se debe modificar directamente el codigo.
 
 ## Conclucion Personal
 Es sencillo y directo, ideal para sistemas pequeños o con reglas fijas, sin embargo, su principal limitación es la falta de flexibilidad: cada nueva condición o cambio en la lógica requiere modificar el código fuente haciendolo menos escalable y más propenso a errores a medida que el sistema crece.

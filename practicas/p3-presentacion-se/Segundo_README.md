@@ -64,9 +64,11 @@ El usuario ingresa sus preferencias:
 > Enfoque Basado en Reglas: Te recomendamos un té de Manzanilla.
 
 ## Ventajas
-- Separación entre lógica e información.  
-- Fácil de ampliar sin tocar el código.  
-- Ideal para sistemas expertos o de IA simbólica.
+- Separación entre logica e informacion. 
+
+- Facil de ampliar sin tocar el codigo.
+  
+- Ideal para sistemas expertos o de IA simbolica.
 
 ## Conclucion Personal
 Que representa una evolución hacia un sistema más modular, adaptable y escalable, al separar la lógica del conocimiento, permite añadir o ajustar reglas sin alterar el código principal, donde el conocimiento se expande con facilidad y el mantenimiento resulta más eficiente.
