@@ -24,8 +24,8 @@ En este repositorio reúne todas las prácticas realizadas en la clase de Inteli
    - [Ver Segundo README](./practicas/p8-Agentes/README4.md)
 
 6. **UNIDAD 6:**
-   - [Ver Primer README](.\practicas\p9-busqueda_no_informada\README.md)
-   - [Ver Segundo README](./practicas/p9-busqueda_no_informada/README5.md)
+   - [Ver Primer README](./practicas/p9-Busqueda_no_informada/README.md)
+   - [Ver Segundo README](./practicas/p9-Busqueda_no_informada/README5.md)
 
 7. **UNIDAD 7:**
    - [Ver README](./practicas/p10-Algoritmos_de_búsqueda_informada/README.md)
