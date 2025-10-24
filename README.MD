@@ -1,175 +1,131 @@
-# Agentes Inteligentes
+# Resolución de Problemas Mediante Búsquedas
+---
+## 🧩 Descripción General  
 
-## 1. Introducción
+Este programa implementa dos algoritmos de búsqueda —**Búsqueda en Amplitud (BFS)** y **Búsqueda en Profundidad (DFS)**— para encontrar rutas entre ciudades de Bolivia representadas como un **grafo no dirigido**.  
 
-Esta documentación explica el funcionamiento de dos tipos de agentes inteligentes implementados en Python dentro del entorno de una aspiradora:  
-* **Agente Reactivo Simple:** actúa directamente en función de sus percepciones actuales sin recordar estados anteriores.  
-* **Agente Basado en Modelos:** utiliza un modelo interno del entorno para tomar decisiones más racionales y eficientes.  
+Cada ciudad es un **nodo**, y las conexiones entre ellas son **aristas** que representan carreteras directas.  
 
-El propósito de este proyecto es mostrar cómo un agente puede percibir, decidir y actuar de forma autónoma para mantener su entorno limpio.
+El objetivo del programa es **encontrar un camino desde una ciudad inicial hasta una ciudad destino**, mostrando los pasos y el número total de paradas intermedias.
 
 ---
 
-## 2. Requisitos para ejecutar
+## ⚙️ Requisitos para Ejecutar el Código  
 
-* **Python**
-* No se requieren librerías externas (todo está implementado con código nativo de Python).
-
-Para ejecutar el código, basta con guardarlo en un archivo `agentes_inteligentes.py` y ejecutarlo con:
+### 1. Instalación de Python  
+Asegúrate de tener instalado **Python 3.7 o superior**.  
+Puedes verificarlo ejecutando en la terminal:  
 
 ```bash
-python agentes_inteligentes.py
+python --version
 ```
+
+Si no lo tienes, descárgalo desde:  
+👉 [https://www.python.org/downloads/](https://www.python.org/downloads/)
+
+### 2. Crear el archivo del programa  
+Copia el código completo en un archivo llamado, por ejemplo:  
+
+```
+busqueda_ciudades.py
+```
+
+### 3. Ejecutar el programa  
+Abre una terminal en la carpeta donde guardaste el archivo y ejecuta:  
+
+```bash
+python busqueda_ciudades.py
+```
+
+El programa mostrará los resultados de la búsqueda en amplitud y en profundidad.  
 
 ---
 
-## 3. Código de los Agentes Inteligentes
+## 🧠 Funcionamiento del Código  
 
-### Entorno de la Aspiradora
-
-Este entorno simula dos habitaciones (A y B), que pueden estar limpias o sucias. El agente se mueve entre ellas y aspira la suciedad según sus percepciones.
+### 1. Representación del Mapa  
+El mapa se modela como un **diccionario (grafo)**, donde cada clave es una ciudad y su valor es una lista de las ciudades conectadas directamente.  
 
 ```python
-class EntornoAspiradora:
-    def __init__(self):
-        self.estado = {'A': 'Sucia', 'B': 'Sucia'}
-        self.ubicacion_agente = 'A'
-        self.rendimiento = 0
-
-    def percibir(self):
-        return (self.ubicacion_agente, self.estado[self.ubicacion_agente])
-
-    def ejecutar_accion(self, accion):
-        if accion == 'aspirar':
-            if self.estado[self.ubicacion_agente] == 'Sucia':
-                self.estado[self.ubicacion_agente] = 'Limpia'
-                self.rendimiento += 10
-        elif accion == 'ir_a_A':
-            self.ubicacion_agente = 'A'
-            self.rendimiento -= 1
-        elif accion == 'ir_a_B':
-            self.ubicacion_agente = 'B'
-            self.rendimiento -= 1
-
-    def simular(self, agente):
-        pasos = 0
-        print(f"Estado Inicial: {self.estado}, Agente en: {self.ubicacion_agente}\n")
-        while 'Sucia' in self.estado.values():
-            percepcion = self.percibir()
-            accion = agente.programa(percepcion)
-            print(f"Paso {pasos+1}: Percepción: {percepcion}, Acción: {accion}\n")
-            self.ejecutar_accion(accion)
-            pasos += 1
-        print(f"Simulación terminada en {pasos} pasos.")
-        print(f"Rendimiento Final: {self.rendimiento}")
-        print(f"Estado Final: {self.estado}\n")
+mapa_bolivia = {
+    'La Paz': ['Oruro', 'Beni'],
+    'Oruro': ['La Paz', 'Cochabamba', 'Potosi'],
+    ...
+}
 ```
+
+Este enfoque permite recorrer las conexiones entre ciudades de manera eficiente.
 
 ---
 
-### Agente Reactivo Simple
+### 2. Algoritmo de **Búsqueda en Amplitud (BFS)**  
 
-Este agente toma decisiones **solo basadas en la percepción actual**. Si el lugar donde está está sucio, aspira; si no, se mueve al otro lado.
+La función `busqueda_amplitud()` utiliza una **cola (`deque`)** para explorar primero las rutas más cortas.  
+Sigue un proceso de **exploración por niveles**, garantizando encontrar el **camino más corto** en términos de número de paradas.
+
+**Etapas del algoritmo:**  
+1. Se inicia desde la ciudad de origen.  
+2. Se exploran todas las ciudades vecinas (nivel 1).  
+3. Luego las ciudades conectadas a esas vecinas (nivel 2), y así sucesivamente.  
+4. Cuando se encuentra el destino, se retorna el camino completo.
 
 ```python
-class AgenteReactivoSimple:
-    def programa(self, percepcion):
-        ubicacion, situacion = percepcion
-        if situacion == 'Sucia':
-            return 'aspirar'
-        elif ubicacion == 'A':
-            return 'ir_a_B'
-        else:
-            return 'ir_a_A'
+cola = deque([[inicio]])
+visitados = {inicio}
 ```
 
 ---
 
-### Agente Basado en Modelos
+### 3. Algoritmo de **Búsqueda en Profundidad (DFS)**  
 
-Este agente **mantiene un modelo interno** del entorno (un registro de qué habitaciones están limpias o sucias). Esto le permite tomar decisiones más racionales y completas.
+La función `busqueda_profundidad()` utiliza una **pila** para explorar primero los caminos más profundos.  
+Este método no garantiza el camino más corto, pero encuentra **una posible ruta válida**.
+
+**Etapas del algoritmo:**  
+1. Se parte desde la ciudad inicial.  
+2. Se avanza lo más profundo posible por un camino.  
+3. Si se llega a un punto sin salida, se retrocede (“backtracking”).  
+4. Se repite hasta hallar el destino o agotar las opciones.
 
 ```python
-class AgenteBasadoEnModelos:
-    def __init__(self):
-        self.modelo = {'A': None, 'B': None}
-
-    def programa(self, percepcion):
-        ubicacion, situacion = percepcion
-        self.modelo[ubicacion] = situacion
-
-        if self.modelo[ubicacion] == 'Sucia':
-            return 'aspirar'
-        elif ubicacion == 'A':
-            return 'ir_a_B'
-        elif ubicacion == 'B':
-            return 'ir_a_A'
+pila = [[inicio]]
+visitados = {inicio}
 ```
 
 ---
 
-## 4. Ejecución de la Simulación
+### 4. Ejecución Principal  
 
-Ambos agentes se prueban en el entorno de la aspiradora con diferentes configuraciones iniciales.
+El código define las ciudades de inicio y destino:
 
 ```python
-# - Simulación 1: Agente Reactivo Simple -
-print("\n--- Probando Agente Reactivo Simple ---")
-entorno1 = EntornoAspiradora()
-entorno1.estado = {'A': 'Sucia', 'B': 'Limpia'}
-entorno1.ubicacion_agente = 'A'
-agente1 = AgenteReactivoSimple()
-entorno1.simular(agente1)
+ciudad_inicio = 'La Paz'
+ciudad_destino = 'Tarija'
+```
 
-# - Simulación 2: Agente Basado en Modelos -
-print("\n--- Probando Agente Basado en Modelos ---")
-entorno2 = EntornoAspiradora()
-entorno2.estado = {'A': 'Sucia', 'B': 'Sucia'}
-entorno2.ubicacion_agente = 'A'
-agente2 = AgenteBasadoEnModelos()
-entorno2.simular(agente2)
+Luego ejecuta ambos algoritmos y muestra los resultados:  
+
+```python
+print("→ Usando Búsqueda en Amplitud (BFS) ←")
+print("→ Usando Búsqueda en Profundidad (DFS) ←")
+```
+
+**Salida esperada (ejemplo):**  
+```
+Buscando ruta de 'La Paz' a 'Tarija'.
+
+→ Usando Búsqueda en Amplitud (BFS) ←
+Camino encontrado: La Paz ➜ Oruro ➜ Potosi ➜ Tarija
+Número de paradas: 3
+
+→ Usando Búsqueda en Profundidad (DFS) ←
+Camino encontrado: La Paz ➜ Oruro ➜ Cochabamba ➜ Chuquisaca ➜ Tarija
+Número de paradas: 4
 ```
 
 ---
 
-## 5. Resultados Esperados
+## 🧾 Conclusión  
 
-### Ejemplo de salida
-
-```
---- Probando Agente Reactivo Simple ---
-Estado Inicial: {'A': 'Sucia', 'B': 'Limpia'}, Agente en: A
-Paso 1: Percepción: ('A', 'Sucia'), Acción: aspirar
-Simulación terminada en 1 pasos.
-Rendimiento Final: 10
-Estado Final: {'A': 'Limpia', 'B': 'Limpia'}
-
---- Probando Agente Basado en Modelos ---
-Estado Inicial: {'A': 'Sucia', 'B': 'Sucia'}, Agente en: A
-Paso 1: Percepción: ('A', 'Sucia'), Acción: aspirar
-Paso 2: Percepción: ('A', 'Limpia'), Acción: ir_a_B
-Paso 3: Percepción: ('B', 'Sucia'), Acción: aspirar
-Simulación terminada en 3 pasos.
-Rendimiento Final: 19
-Estado Final: {'A': 'Limpia', 'B': 'Limpia'}
-```
-
----
-
-## 6. Explicación del Funcionamiento
-
-1. El **entorno** define el estado inicial de las habitaciones y las posibles acciones.  
-2. El **agente** percibe el entorno (ubicación y estado del lugar actual).  
-3. Según el tipo de agente:
-   * El **Reactivo Simple** actúa solo con la percepción inmediata.
-   * El **Basado en Modelos** actualiza un registro interno y actúa en función de su conocimiento previo.  
-4. La simulación continúa hasta que todas las habitaciones estén limpias.  
-5. Se calcula el **rendimiento**, premiando la limpieza y penalizando los movimientos.
-
----
-
-## 7. Conclusión
-
-Los resultados llegan a demuestrar que el Agente Reactivo Simple es rápido y eficaz en entornos pequeños, pero se limita por su falta de memoria.  
-En cambio, el Agente Basado en Modelos llega a mostrar un comportamiento más racional y adaptativo, ya que usa conocimiento interno para planificar mejor sus acciones.  
-Este experimento llega  a evidenciar cómo la incorporación de memoria y razonamiento mejora la inteligencia de los agentes.
+Este programa aplica los algoritmos de búsqueda BFS y DFS para resolver problemas de rutas en un grafo que representa el mapa de Bolivia.
+Permite observar cómo cada método ofrece estrategias distintas de exploración, siendo BFS ideal para el camino más corto y DFS útil para explorar todas las rutas posibles.
