@@ -1,0 +1,51 @@
+# 🧠 UNIDAD 7 - PRÁCTICA 10  
+## **Búsqueda Informada y Exploración**
+
+Esta práctica tiene como objetivo comparar las estrategias de **búsqueda informada (A\*)** y **búsqueda no informada (Costo Uniforme - UCS)**, aplicadas a un mapa simplificado de ciudades de Bolivia.  
+Se busca demostrar cómo el uso de **heurísticas** permite encontrar soluciones más eficientes en problemas de exploración.
+
+---
+
+## 📘 **1. Objetivo General**
+
+Implementar y comparar los algoritmos **A\*** y **UCS** para encontrar la ruta más corta entre ciudades, utilizando:
+- Costos reales (distancias).
+- Coordenadas geográficas para la heurística.
+- Análisis de eficiencia basado en la cantidad de nodos expandidos.
+
+---
+
+## ⚙️ **2. Archivos del Proyecto**
+
+| Archivo | Descripción |
+|----------|--------------|
+| `PRIMERA_PARTE_UNIDAD7.py` | Define el mapa, los costos entre ciudades y la función heurística (distancia en línea recta). |
+| `SEGUNDA_PARTE_UNIDAD7.py` | Implementa el algoritmo de búsqueda A\* (A-estrella). |
+| `TERCERA_PARTE_UNIDAD7.py` | Implementa la búsqueda no informada de Costo Uniforme (UCS). |
+| `CUARTA_PARTE_UNIDAD7.py` | Ejecuta ambos algoritmos y compara sus resultados. |
+
+---
+
+## 🗺️ **3. Descripción del Mapa**
+
+El mapa modela conexiones reales (aproximadas) entre ciudades principales de Bolivia:
+
+```python
+mapa_bolivia_mejorado = {
+    'La Paz': {'Oruro': 230, 'Beni': 1060},
+    'Oruro': {'La Paz': 230, 'Cochabamba': 210, 'Potosí': 330},
+    'Cochabamba': {'Oruro': 210, 'Santa Cruz': 470, 'Chuquisaca': 360, 'Beni': 900},
+    'Potosí': {'Oruro': 330, 'Chuquisaca': 160, 'Tarija': 345},
+    'Chuquisaca': {'Cochabamba': 360, 'Potosí': 160, 'Santa Cruz': 470, 'Tarija': 480},
+    'Santa Cruz': {'Cochabamba': 470, 'Chuquisaca': 470, 'Beni': 280},
+    'Tarija': {'Potosí': 345, 'Chuquisaca': 480},
+    'Beni': {'La Paz': 1060, 'Cochabamba': 900, 'Santa Cruz': 280}
+}
+```
+## 🧠 9. Conclusión General
+
+La búsqueda informada (A*) aprovecha el conocimiento adicional del problema a través de una función heurística, reduciendo el número de nodos visitados.
+
+La búsqueda no informada (UCS), aunque encuentra la misma solución óptima, consume más recursos y tiempo.
+
+En este caso, A* logró encontrar la misma ruta óptima de manera más rápida y eficiente, demostrando cómo el uso de heurísticas mejora el rendimiento en tareas de exploración y planificación.
