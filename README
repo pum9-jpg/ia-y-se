@@ -1,0 +1,141 @@
+# 🤖 Unidad 3: Los Sistemas Expertos — Definición y Conceptos
+
+---
+
+## 📘 Descripción General
+
+Esta unidad aborda el **núcleo de la Inteligencia Artificial simbólica**: los **Sistemas Expertos (SE)**.  
+Un **Sistema Experto** es un programa que utiliza conocimiento especializado y técnicas de inferencia lógica para resolver problemas en un dominio específico, imitando el razonamiento de un experto humano.
+
+El proyecto práctico de esta unidad consiste en **construir un Sistema Experto para diagnosticar por qué un automóvil no enciende**, demostrando:
+
+1. La **separación entre la base de conocimiento** y el **motor de inferencia**.  
+2. El uso de **conocimiento superficial (reglas SI–ENTONCES)**.  
+3. La **capacidad de explicación**, característica esencial de los sistemas expertos.
+
+---
+
+## ⚙️ Arquitectura del Sistema Experto
+
+Un **Sistema Experto** se compone de tres módulos principales:
+
+| Componente | Función |
+|-------------|----------|
+| 🧠 **Base de Conocimiento** | Contiene las reglas, hechos y heurísticas del experto humano. |
+| ⚙️ **Motor de Inferencia** | Procesa las reglas y deduce conclusiones a partir de los hechos conocidos. |
+| 💬 **Módulo de Explicación** | Justifica el razonamiento del sistema, explicando cómo se llegó a cada diagnóstico. |
+
+---
+
+## 🧱 Paso 1: Base de Conocimiento
+
+La **base de conocimiento** está formada por una lista de reglas representadas en diccionarios.  
+Cada regla contiene:
+- `"nombre"`: identificación de la regla.  
+- `"si"`: lista de condiciones o hechos requeridos.  
+- `"entonces"`: conclusión deducida cuando se cumplen las condiciones.
+
+```python
+base_de_conocimiento_coche = [
+    {
+        "nombre": "Regla 1: Problema de batería o motor de arranque",
+        "si": ["coche_no_gira_llave"],
+        "entonces": "problema_bateria_o_arranque"
+    },
+    {
+        "nombre": "Regla 3: Batería descargada confirmada",
+        "si": ["problema_bateria_o_arranque", "luces_debiles_o_muertas"],
+        "entonces": "diagnostico_bateria_descargada"
+    },
+    ...
+]
+```
+## 🧮 Paso 2: Motor de Inferencia
+```
+El motor de inferencia aplica un algoritmo de encadenamiento hacia adelante (forward chaining).
+Comienza con hechos iniciales y aplica las reglas que se cumplen, agregando nuevas conclusiones hasta que no haya más hechos que deducir.
+
+class SistemaExperto:
+    def razonar(self, hechos_iniciales):
+        self.hechos = set(hechos_iniciales)
+        nuevos_hechos_encontrados = True
+        while nuevos_hechos_encontrados:
+            nuevos_hechos_encontrados = False
+            for regla in self.reglas:
+                condiciones = set(regla["si"])
+                conclusion = regla["entonces"]
+                if condiciones.issubset(self.hechos) and conclusion not in self.hechos:
+                    self.hechos.add(conclusion)
+                    self.historial_inferencia[conclusion] = regla["nombre"]
+```
+## Paso 3: Módulo de Explicación
+```
+Una de las características más importantes de los Sistemas Expertos es su capacidad para explicar el razonamiento.
+El método explicar_conclusion() describe paso a paso cómo se llegó a una deducción:
+
+def explicar_conclusion(self, conclusion):
+    regla_que_lo_genero = self.historial_inferencia[conclusion]
+    explicacion = f"Se llegó a '{conclusion}' por la regla '{regla_que_lo_genero}'."
+    return explicacion
+```
+## 🚗 Ejemplo de Uso
+# Hechos iniciales (observaciones del usuario)
+hechos_usuario = ["coche_no_gira_llave", "luces_funcionan_bien"]
+
+# Crear sistema experto y ejecutar
+sistema = SistemaExperto(base_de_conocimiento_coche)
+sistema.razonar(hechos_usuario)
+
+# Diagnóstico final
+diagnosticos = sistema.obtener_diagnosticos_finales()
+print("Diagnósticos finales:", diagnosticos)
+
+# Explicación del razonamiento
+if diagnosticos:
+    print(sistema.explicar_conclusion(diagnosticos[0]))
+
+## 🧾 Salida Esperada
+=== PROCESO DE RAZONAMIENTO ===
+
+✔ Hecho añadido: problema_bateria_o_arranque (por Regla 1: Problema de batería o motor de arranque)
+✔ Hecho añadido: diagnostico_motor_arranque_defectuoso (por Regla 4: Posible problema del motor de arranque)
+
+=== FIN DEL PROCESO DE RAZONAMIENTO ===
+
+Diagnósticos finales: ['diagnostico_motor_arranque_defectuoso']
+
+=== EXPLICACIÓN DEL DIAGNÓSTICO ===
+Se llegó a la conclusión 'diagnostico_motor_arranque_defectuoso' por la 'Regla 4: Posible problema del motor de arranque'.
+Esta regla dice: SI se cumplen las condiciones ['problema_bateria_o_arranque', 'luces_funcionan_bien'], ENTONCES se deduce 'diagnostico_motor_arranque_defectuoso'.
+
+Se llegó a la conclusión 'problema_bateria_o_arranque' por la 'Regla 1: Problema de batería o motor de arranque'.
+Esta regla dice: SI se cumplen las condiciones ['coche_no_gira_llave'], ENTONCES se deduce 'problema_bateria_o_arranque'.
+
+La conclusión 'coche_no_gira_llave' fue un hecho inicial.
+
+## 🧠 Características Demostradas
+Característica	Descripción
+Competencia de Experto	El sistema emite diagnósticos similares a los de un mecánico.
+Separación del Conocimiento y el Motor	La base de reglas puede modificarse sin alterar el motor lógico.
+Capacidad de Explicación	Explica cómo se llegó a cada conclusión paso a paso.
+Manejo de Conocimiento Superficial	Utiliza reglas simples basadas en experiencia práctica.
+## 🧩 Beneficios del Sistema Experto
+
+Permite automatizar el razonamiento experto en dominios específicos.
+
+Facilita el mantenimiento del conocimiento, separando datos y lógica.
+
+Puede explicar sus decisiones, generando confianza en el usuario.
+
+Es extensible, basta con agregar nuevas reglas para cubrir más casos.
+
+## 🧭 Conclusión
+
+La construcción de un Sistema Experto demuestra cómo la Inteligencia Artificial simbólica puede reproducir el pensamiento humano a través de reglas lógicas.
+En este proyecto se comprobó que:
+
+La base de conocimiento encapsula la experiencia del experto humano.
+
+El motor de inferencia puede razonar y deducir conclusiones de manera automática.
+
+El módulo de explicación otorga transparencia al razonamiento del sistema.
