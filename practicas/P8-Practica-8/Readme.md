@@ -132,10 +132,6 @@ Simulación terminada en 3 pasos. Rendimiento final: 8
 
 ## Conclusión
 
-Este proyecto demuestra claramente la evolución en arquitecturas de agentes inteligentes. El agente reactivo simple, aunque funcional, presenta limitaciones significativas debido a su naturaleza miope - solo responde a estímulos inmediatos sin capacidad de planificación o memoria. Su comportamiento, aunque correcto, resulta ineficiente en muchos escenarios.
+# Conclusión
 
-El agente basado en modelos representa un salto cualitativo en inteligencia artificial. Al mantener un estado interno del mundo, puede tomar decisiones informadas que consideran información no directamente perceptible. Esta capacidad de "recordar" y "inferir" le permite optimizar su comportamiento, evitando acciones redundantes y dirigiendo sus esfuerzos de manera más eficiente.
-
-La diferencia fundamental radica en que el agente reactivo opera en el presente absoluto, mientras que el agente basado en modelos integra pasado, presente y expectativas futuras en su proceso de decisión. Esta capacidad de modelado mental es lo que acerca a estos sistemas a formas más avanzadas de inteligencia, permitiéndoles no solo reaccionar al entorno sino anticiparse y planificar.
-
-La implementación presentada sirve como base fundamental para entender principios clave de la inteligencia artificial: percepción, acción, modelado del estado, y la relación entre complejidad arquitectónica y eficiencia operativa. Estos conceptos son extensibles a sistemas más complejos como robots autónomos, sistemas de recomendación, y agentes de software en entornos dinámicos.
+Este proyecto demuestra la evolución fundamental en inteligencia artificial: mientras el agente reactivo simple opera únicamente en el presente inmediato - respondiendo a estímulos sin memoria ni planificación -, el agente basado en modelos representa un salto cualitativo al mantener un estado interno del mundo que le permite recordar, inferir y anticiparse. Esta capacidad de modelado mental transforma la eficiencia del comportamiento: donde el primero actúa de forma miope y repetitiva, el segundo optimiza sus acciones evitando redundancias y dirigiendo sus esfuerzos de manera inteligente. La diferencia esencial radica en que un agente con memoria no solo reacciona al entorno, sino que lo comprende y planifica, sentando las bases para sistemas más avanzados como robots autónomos y asistentes inteligentes que requieren verdadera comprensión contextual.
