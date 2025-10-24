@@ -1,0 +1,52 @@
+# 🧠 Unidad 2: La Representación del Conocimiento  
+**Modelado del conocimiento mediante Reglas de Producción y Marcos (Frames)**  
+
+---
+
+## 📘 Descripción General
+Esta unidad aborda uno de los aspectos fundamentales de la **Inteligencia Artificial (IA)**:  
+**la representación del conocimiento**, es decir, cómo expresar de manera formal la información que un experto humano posee para que una computadora pueda procesarla, interpretarla y razonar con ella.
+
+El trabajo se centra en dos enfoques clásicos de la **Ingeniería del Conocimiento**:
+1. **Reglas de Producción (IF–THEN):** Representan relaciones causa–efecto o diagnósticos.
+2. **Marcos (Frames):** Representan objetos, propiedades y relaciones de manera estructurada y orientada a objetos.
+
+---
+
+## ⚙️ Requisitos Previos
+- Python 3.8 o superior.  
+- Editor de texto o entorno de desarrollo (Visual Studio Code, PyCharm o similar).  
+- No requiere librerías externas.  
+
+---
+
+## 📁 Archivos del Proyecto
+- `Unidad2_Parte1_Reglas.py` → Representación mediante **Reglas de Producción**.  
+- `Unidad2_Parte2_Frames.py` → Representación mediante **Marcos (Frames)**.  
+- `README.md` → Este archivo con instrucciones y explicación.  
+
+---
+
+## 🚀 Ejecución Paso a Paso
+
+### 1️⃣ Reglas de Producción (Parte 1)
+Este enfoque se basa en el modelo **IF–THEN (Si–Entonces)**, donde las reglas capturan relaciones de causa y efecto.
+
+#### Ejemplo de uso:
+```bash
+python Unidad2_Parte1_Reglas.py
+```
+## Conclusión
+
+La representación del conocimiento es esencial en la Inteligencia Artificial simbólica.
+Sin una estructura formal, una máquina no puede razonar ni aprender de manera coherente.
+
+Las Reglas de Producción permiten expresar el razonamiento lógico humano mediante estructuras simples tipo Si–Entonces, facilitando el desarrollo de sistemas expertos de diagnóstico.
+
+Los Marcos (Frames) aportan una forma más estructurada y modular de modelar la realidad, ideal para describir objetos y sus propiedades dentro de un dominio.
+
+Ambos enfoques son complementarios:
+
+Las reglas proporcionan lógica de inferencia,
+
+Los marcos proporcionan contexto y estructura.
