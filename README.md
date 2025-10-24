@@ -29,4 +29,3 @@ En este repositorio reúne todas las prácticas realizadas en la clase de Inteli
 
 7. **UNIDAD 7:**
    - [Ver README](./practicas/p10-Algoritmos_de_búsqueda_informada/README.md)
-
