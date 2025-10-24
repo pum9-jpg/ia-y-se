@@ -1,51 +1,40 @@
-# Unidad 5 — Ejercicio 2: Agente Basado en Modelo
+# Unidad 5 — Ejercicio 1: Agente Reactivo Simple
 
 ## Descripción
-A diferencia del agente reactivo, este agente mantiene un **modelo interno del entorno**.  
-Utiliza la información percibida y su conocimiento previo para decidir acciones más efectivas.  
-Este enfoque mejora el rendimiento en entornos donde el estado no siempre es visible completamente.
+Este ejercicio introduce el concepto de **agente inteligente**, comenzando con un **agente reactivo**.  
+El agente toma decisiones basadas únicamente en su percepción actual, sin considerar el historial de acciones previas.  
+El ejemplo más común es el **mundo del aspirador**, donde el agente limpia si detecta suciedad en su ubicación.
 
 ---
 
 ## Código (copiado del libro)
 ```python
-# Agente basado en modelo (Mundo del aspirador)
+# Simulación del mundo del aspirador (Agente Reactivo)
 import random
 
-class AgenteModelo:
-    def __init__(self):
-        self.modelo = {"A": None, "B": None}
-
-    def percibir_y_actuar(self, posicion, estado):
-        print(f"El agente está en {posicion}, el entorno es {estado[posicion]}")
-        self.modelo[posicion] = estado[posicion]
-
-        if estado[posicion] == "sucio":
-            print("Acción: limpiar")
-            estado[posicion] = "limpio"
-        elif self.modelo["A"] == "limpio" and self.modelo["B"] == "limpio":
-            print("Acción: detener (ambiente limpio)")
-            return None, estado
-        else:
-            nueva_posicion = "B" if posicion == "A" else "A"
-            print(f"Acción: moverse a {nueva_posicion}")
-            posicion = nueva_posicion
-        return posicion, estado
-
-# Simulación
-estado = {"A": random.choice(["sucio", "limpio"]), "B": random.choice(["sucio", "limpio"])}
-agente = AgenteModelo()
+# Estado inicial del entorno
+ambiente = ["sucio", "limpio"]
 posicion = random.choice(["A", "B"])
+estado = {"A": random.choice(ambiente), "B": random.choice(ambiente)}
 
-for _ in range(5):
-    if posicion is None:
-        break
-    posicion, estado = agente.percibir_y_actuar(posicion, estado)
-    print("Modelo interno:", agente.modelo)
+def agente_reactivo(posicion, estado):
+    print(f"El agente está en la posición {posicion} y el estado es {estado[posicion]}")
+    if estado[posicion] == "sucio":
+        print("Acción: limpiar")
+        estado[posicion] = "limpio"
+    else:
+        nueva_posicion = "B" if posicion == "A" else "A"
+        print(f"Acción: moverse a {nueva_posicion}")
+        posicion = nueva_posicion
+    return posicion, estado
+
+# Bucle de simulación
+for _ in range(4):
+    posicion, estado = agente_reactivo(posicion, estado)
     print("Estado actual:", estado, "\n")
 ```
-# Ejemplo de salida esperada
 
+# Ejemplo de salida esperada
 El agente está en la posición A y el estado es sucio
 Acción: limpiar
 Estado actual: {'A': 'limpio', 'B': 'sucio'}
@@ -54,13 +43,14 @@ El agente está en la posición A y el estado es limpio
 Acción: moverse a B
 Estado actual: {'A': 'limpio', 'B': 'sucio'}
 
-## Observaciones
+# Observaciones
 
-El agente no tiene memoria: 
-- Actua solo segun el estado actual, representando la forma mas basica de inteligencia reactiva.
+- El agente no tiene memoria: actua solo segun el estado actual.
+
+- Representa la forma mas básica de inteligencia reactiva.
 
 - Util para entornos simples y deterministas.
 
-## Conclusión
+# Conclusión
 
-El agente reactivo demuestra cómo un sistema puede actuar de manera autónoma sin memoria, respondiendo directamente a su entorno, siendo el punto de partida para agentes más complejos.
+El agente reactivo demuestra cómo un sistema puede actuar de manera autónoma sin memoria, respondiendo directamente a su entorno, haciendo que el punto de partida para agentes sea más complejo.
