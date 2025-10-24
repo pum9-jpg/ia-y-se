@@ -1,3 +1,5 @@
+# Mapa Mental: Unidad 2
+```mermaid
 mindmap
   root((Unidad 2: Representación del Conocimiento))
     (Ingeniería del Conocimiento)
@@ -22,3 +24,5 @@ mindmap
       ::icon(fa fa-bottle-water)
       - Dificultad para extraer conocimiento
       - Conocimiento tácito
+
+```

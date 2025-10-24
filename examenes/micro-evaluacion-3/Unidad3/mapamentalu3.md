@@ -1,3 +1,5 @@
+# Mapa Mental: Unidad 3
+```mermaid
 mindmap
   root((Unidad 3: Sistemas Expertos))
     (Concepto)
@@ -27,3 +29,5 @@ mindmap
       - Predicción
       - Diseño
       - Planificación
+
+```
