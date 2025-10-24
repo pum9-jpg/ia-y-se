@@ -1,168 +1,175 @@
-# Unidad 3: Los Sistemas Expertos, Definición y Conceptos
+# Agentes Inteligentes
 
-## 🧠 Sistema Experto de Diagnóstico Automotriz
+## 1. Introducción
 
-Este proyecto implementa un **sistema experto** en Python capaz de **diagnosticar fallas comunes en un coche** basándose en reglas y hechos proporcionados por el usuario.  
+Esta documentación explica el funcionamiento de dos tipos de agentes inteligentes implementados en Python dentro del entorno de una aspiradora:  
+* **Agente Reactivo Simple:** actúa directamente en función de sus percepciones actuales sin recordar estados anteriores.  
+* **Agente Basado en Modelos:** utiliza un modelo interno del entorno para tomar decisiones más racionales y eficientes.  
 
-El sistema utiliza un **motor de inferencia hacia adelante (forward chaining)** para deducir conclusiones (diagnósticos) a partir de una **base de conocimiento** y hechos iniciales.
-
----
-
-## 📚 Estructura del Código
-
-El programa se divide en **tres partes principales**:
+El propósito de este proyecto es mostrar cómo un agente puede percibir, decidir y actuar de forma autónoma para mantener su entorno limpio.
 
 ---
 
-### 🔹 **Parte 1: Base de Conocimiento**
+## 2. Requisitos para ejecutar
 
-Contiene un conjunto de **reglas** que representan el conocimiento de un mecánico experto.  
-Cada regla tiene la siguiente estructura:
+* **Python**
+* No se requieren librerías externas (todo está implementado con código nativo de Python).
 
-```python
-{
-    "nombre": "Regla 1: Problema de batería o motor de arranque",
-    "si": ["coche_no_gira_llave"],
-    "entonces": "problema_bateria_o_arranque"
-}
-```
-
-- `"si"` → Lista de **condiciones** o hechos que deben cumplirse.  
-- `"entonces"` → **Conclusión** que se deduce si se cumplen todas las condiciones.  
-- `"nombre"` → Descripción de la regla.
-
-📘 **Ejemplo:**  
-Si el coche **no gira la llave**, se deduce que puede haber un **problema de batería o de arranque**.
-
----
-
-### 🔹 **Parte 2: Motor de Inferencia (`SistemaExperto`)**
-
-Esta clase implementa la lógica del razonamiento automático.  
-Su función es **deducir nuevos hechos** a partir de los hechos iniciales y las reglas.
-
-#### Principales métodos:
-
-- `__init__(self, reglas)`  
-  Inicializa el sistema con una lista de reglas.
-
-- `razonar(self, hechos_iniciales)`  
-  Aplica el motor de inferencia hacia adelante:
-  1. Comienza con los hechos iniciales.
-  2. Busca reglas cuyas condiciones se cumplan.
-  3. Añade las conclusiones nuevas a la lista de hechos.
-  4. Repite hasta que no haya nuevas deducciones.
-
-- `obtener_diagnosticos_finales(self)`  
-  Retorna las conclusiones que representan **diagnósticos finales** (comienzan con `"diagnostico_"`).
-
-- `explicar_conclusion(self, conclusion)`  
-  Genera una **explicación encadenada** del razonamiento, mostrando cómo se llegó a cada conclusión.
-
----
-
-### 🔹 **Parte 3: Ejecución del Sistema**
-
-En esta sección se define un **caso de uso**:
-
-```python
-hechos_del_usuario_1 = [
-    "coche_no_gira_llave",
-    "luces_debiles_o_muertas"
-]
-```
-
-Luego se crea una instancia del sistema experto y se ejecuta el razonamiento:
-
-```python
-se_coche = SistemaExperto(base_de_conocimiento_coche)
-hechos_finales_1 = se_coche.razonar(hechos_del_usuario_1)
-diagnosticos_1 = se_coche.obtener_diagnosticos_finales()
-```
-
-Finalmente, se muestra el **diagnóstico** y una **explicación** de cómo se obtuvo.
-
----
-
-## ⚙️ Ejecución
-
-### 🔸 Requisitos
-- Python 3.8 o superior
-
-### 🔸 Instrucciones
-1. Guarda el código en un archivo llamado `sistema_experto_coche.py`
-2. Ejecuta el programa en la terminal:
+Para ejecutar el código, basta con guardarlo en un archivo `agentes_inteligentes.py` y ejecutarlo con:
 
 ```bash
-python sistema_experto_coche.py
+python agentes_inteligentes.py
 ```
 
 ---
 
-## 🧾 Ejemplo de Salida
+## 3. Código de los Agentes Inteligentes
 
-```plaintext
-# - Caso de Uso 1 -
-# Hechos iniciales: El coche no gira la llave y las luces están muertas.
+### Entorno de la Aspiradora
 
---  INICIANDO DIAGNÓSTICO CASO 1 -
-- Proceso de Razonamiento -
-Hecho añadido: 'problema_bateria_o_arranque' (Gracias a la regla:
-'Regla 1: Problema de bateria o motor de arranque')
-Hecho añadido: 'diagnostico_bateria_descargada' (Gracias a la regla:
-'Regla 3: Bateria descargada confirmada')
-- Fin del Proceso de Razonamiento -
+Este entorno simula dos habitaciones (A y B), que pueden estar limpias o sucias. El agente se mueve entre ellas y aspira la suciedad según sus percepciones.
 
-Hechos Finales Deducidos: {'coche_no_gira_llave', 'luces_debiles_o_muertas', 
-'problema_bateria_o_arranque', 'diagnostico_bateria_descargada'}
-Diagnóstico(s) Final(es): ['diagnostico_bateria_descargada']
+```python
+class EntornoAspiradora:
+    def __init__(self):
+        self.estado = {'A': 'Sucia', 'B': 'Sucia'}
+        self.ubicacion_agente = 'A'
+        self.rendimiento = 0
 
-- EXPLICACIÓN DEL DIAGNÓSTICO -
+    def percibir(self):
+        return (self.ubicacion_agente, self.estado[self.ubicacion_agente])
 
-Se llegó a la conclusión 'diagnostico_bateria_descargada' por la 'Regla 3: Bateria descargada confirmada'.
-Esta regla establece que SI se cumplen las siguientes condiciones: ['problema_bateria_o_arranque', 'luces_debiles_o_muertas'], 
-ENTONCES se deduce 'diagnostico_bateria_descargada'.
+    def ejecutar_accion(self, accion):
+        if accion == 'aspirar':
+            if self.estado[self.ubicacion_agente] == 'Sucia':
+                self.estado[self.ubicacion_agente] = 'Limpia'
+                self.rendimiento += 10
+        elif accion == 'ir_a_A':
+            self.ubicacion_agente = 'A'
+            self.rendimiento -= 1
+        elif accion == 'ir_a_B':
+            self.ubicacion_agente = 'B'
+            self.rendimiento -= 1
+
+    def simular(self, agente):
+        pasos = 0
+        print(f"Estado Inicial: {self.estado}, Agente en: {self.ubicacion_agente}\n")
+        while 'Sucia' in self.estado.values():
+            percepcion = self.percibir()
+            accion = agente.programa(percepcion)
+            print(f"Paso {pasos+1}: Percepción: {percepcion}, Acción: {accion}\n")
+            self.ejecutar_accion(accion)
+            pasos += 1
+        print(f"Simulación terminada en {pasos} pasos.")
+        print(f"Rendimiento Final: {self.rendimiento}")
+        print(f"Estado Final: {self.estado}\n")
 ```
 
 ---
 
-## 🧩 Explicación del Funcionamiento
+### Agente Reactivo Simple
 
-1. **El usuario introduce hechos iniciales.**
-   - Ejemplo: “el coche no gira la llave” y “las luces están muertas”.
+Este agente toma decisiones **solo basadas en la percepción actual**. Si el lugar donde está está sucio, aspira; si no, se mueve al otro lado.
 
-2. **El sistema busca reglas que coincidan con esos hechos.**
-   - Aplica la regla 1 → deduce “problema_bateria_o_arranque”.
-   - Luego aplica la regla 3 → deduce “diagnostico_bateria_descargada”.
-
-3. **El motor sigue infiriendo hasta que no hay más conclusiones posibles.**
-
-4. **El sistema muestra los hechos finales y el diagnóstico.**
-
-5. **Se explica cómo se llegó a la conclusión final.**
-
----
-
-## 🧠 Conceptos Clave
-
-| Concepto | Descripción |
-|-----------|-------------|
-| **Hecho** | Información conocida o proporcionada por el usuario. |
-| **Regla** | Conocimiento experto que relaciona condiciones con conclusiones. |
-| **Motor de inferencia** | Lógica que aplica las reglas para deducir nuevos hechos. |
-| **Diagnóstico** | Conclusión final que identifica el problema del coche. |
+```python
+class AgenteReactivoSimple:
+    def programa(self, percepcion):
+        ubicacion, situacion = percepcion
+        if situacion == 'Sucia':
+            return 'aspirar'
+        elif ubicacion == 'A':
+            return 'ir_a_B'
+        else:
+            return 'ir_a_A'
+```
 
 ---
 
-## 🚗 Posibles Extensiones
+### Agente Basado en Modelos
 
-- Añadir más reglas para cubrir más tipos de fallas.  
-- Permitir entrada interactiva del usuario.  
-- Implementar una interfaz gráfica (por ejemplo, con Tkinter).  
-- Guardar los diagnósticos en un archivo de registro.
+Este agente **mantiene un modelo interno** del entorno (un registro de qué habitaciones están limpias o sucias). Esto le permite tomar decisiones más racionales y completas.
+
+```python
+class AgenteBasadoEnModelos:
+    def __init__(self):
+        self.modelo = {'A': None, 'B': None}
+
+    def programa(self, percepcion):
+        ubicacion, situacion = percepcion
+        self.modelo[ubicacion] = situacion
+
+        if self.modelo[ubicacion] == 'Sucia':
+            return 'aspirar'
+        elif ubicacion == 'A':
+            return 'ir_a_B'
+        elif ubicacion == 'B':
+            return 'ir_a_A'
+```
 
 ---
 
-## CONCLUSION
+## 4. Ejecución de la Simulación
 
-Con este proyecto se aprendió cómo un sistema experto puede llegar razonar sobre información y tomar decisiones similares a las de un humano. Al construir este mini sistema de diagnóstico de coches, se llego a comprender cómo se aplican reglas, se procesan hechos y se generan explicaciones claras para llegar a conclusiones confiables.
+Ambos agentes se prueban en el entorno de la aspiradora con diferentes configuraciones iniciales.
+
+```python
+# - Simulación 1: Agente Reactivo Simple -
+print("\n--- Probando Agente Reactivo Simple ---")
+entorno1 = EntornoAspiradora()
+entorno1.estado = {'A': 'Sucia', 'B': 'Limpia'}
+entorno1.ubicacion_agente = 'A'
+agente1 = AgenteReactivoSimple()
+entorno1.simular(agente1)
+
+# - Simulación 2: Agente Basado en Modelos -
+print("\n--- Probando Agente Basado en Modelos ---")
+entorno2 = EntornoAspiradora()
+entorno2.estado = {'A': 'Sucia', 'B': 'Sucia'}
+entorno2.ubicacion_agente = 'A'
+agente2 = AgenteBasadoEnModelos()
+entorno2.simular(agente2)
+```
+
+---
+
+## 5. Resultados Esperados
+
+### Ejemplo de salida
+
+```
+--- Probando Agente Reactivo Simple ---
+Estado Inicial: {'A': 'Sucia', 'B': 'Limpia'}, Agente en: A
+Paso 1: Percepción: ('A', 'Sucia'), Acción: aspirar
+Simulación terminada en 1 pasos.
+Rendimiento Final: 10
+Estado Final: {'A': 'Limpia', 'B': 'Limpia'}
+
+--- Probando Agente Basado en Modelos ---
+Estado Inicial: {'A': 'Sucia', 'B': 'Sucia'}, Agente en: A
+Paso 1: Percepción: ('A', 'Sucia'), Acción: aspirar
+Paso 2: Percepción: ('A', 'Limpia'), Acción: ir_a_B
+Paso 3: Percepción: ('B', 'Sucia'), Acción: aspirar
+Simulación terminada en 3 pasos.
+Rendimiento Final: 19
+Estado Final: {'A': 'Limpia', 'B': 'Limpia'}
+```
+
+---
+
+## 6. Explicación del Funcionamiento
+
+1. El **entorno** define el estado inicial de las habitaciones y las posibles acciones.  
+2. El **agente** percibe el entorno (ubicación y estado del lugar actual).  
+3. Según el tipo de agente:
+   * El **Reactivo Simple** actúa solo con la percepción inmediata.
+   * El **Basado en Modelos** actualiza un registro interno y actúa en función de su conocimiento previo.  
+4. La simulación continúa hasta que todas las habitaciones estén limpias.  
+5. Se calcula el **rendimiento**, premiando la limpieza y penalizando los movimientos.
+
+---
+
+## 7. Conclusión
+
+Los resultados llegan a demuestrar que el Agente Reactivo Simple es rápido y eficaz en entornos pequeños, pero se limita por su falta de memoria.  
+En cambio, el Agente Basado en Modelos llega a mostrar un comportamiento más racional y adaptativo, ya que usa conocimiento interno para planificar mejor sus acciones.  
+Este experimento llega  a evidenciar cómo la incorporación de memoria y razonamiento mejora la inteligencia de los agentes.
