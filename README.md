@@ -1,31 +1,30 @@
-# Prácticas de aula
+# Prácticas
 
-Este repositorio reúne todas las prácticas realizadas en el aula por Robert Adrian Bustamante Arratia.  
-Cada enlace dirige al README de la práctica correspondiente.
+Unificando los Readme de cada unidad de los ejercicios del libro. 
 
 ## Prácticas
 
 1. **Unidad 1:**  
-   [Ver README](./practicas/p3-Presentacion-SE/README.md)
+   [Ver README](./practicas/p3-Presentacion-SE/README.MD)
 
 2. **Unidad 2:**  
-   [Ver README](./practicas/p4-representacion_del_conocimiento/README.md)
+   [Ver README](./practicas/p4-representacion_del_conocimiento/README.MD)
 
 
 3. **Unidad 3:**  
-   [Ver README](./practicas/p5-Sistemas-Expertos/README.md)
+   [Ver README](./practicas/p5-Sistemas-Expertos/README.MD)
 
 
 4. **Unidad 4:**  
-   [Ver README](./practicas/p6-Razonamiento-y-Resolución-de-Problemas/README.md)
+   [Ver README](./practicas/p6-Razonamiento-y-Resolución-de-Problemas/README.MD)
 
 
 5. **Unidad 5:**  
-   [Ver README](./practicas/p8-Agentes-Inteligentes/README.md)
+   [Ver README](./practicas/p8-Agentes-Inteligentes/README.MD)
 
 
 6. **Unidad 6:**  
-   [Ver README](./practicas/p9-Unidad6/README.md)
+   [Ver README](./practicas/p9-Unidad6/README.MD)
 
 
 7. **Unidad 7:**  
