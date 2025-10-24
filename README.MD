@@ -1,131 +1,127 @@
-# Resolución de Problemas Mediante Búsquedas
----
-## 🧩 Descripción General  
+# 🧭 Búsqueda de Rutas Óptimas en Bolivia 🇧🇴
 
-Este programa implementa dos algoritmos de búsqueda —**Búsqueda en Amplitud (BFS)** y **Búsqueda en Profundidad (DFS)**— para encontrar rutas entre ciudades de Bolivia representadas como un **grafo no dirigido**.  
-
-Cada ciudad es un **nodo**, y las conexiones entre ellas son **aristas** que representan carreteras directas.  
-
-El objetivo del programa es **encontrar un camino desde una ciudad inicial hasta una ciudad destino**, mostrando los pasos y el número total de paradas intermedias.
+Este proyecto implementa **dos algoritmos clásicos de Inteligencia Artificial (IA)** para la búsqueda de rutas entre ciudades bolivianas:
+- **Búsqueda de Costo Uniforme (UCS)**: un algoritmo no informado que garantiza la ruta más corta.  
+- **Búsqueda A\*** (A estrella): un algoritmo informado que combina el costo recorrido y una heurística para optimizar la búsqueda.
 
 ---
 
-## ⚙️ Requisitos para Ejecutar el Código  
+## ⚙️ Requisitos para compilar y ejecutar el código
 
-### 1. Instalación de Python  
-Asegúrate de tener instalado **Python 3.7 o superior**.  
-Puedes verificarlo ejecutando en la terminal:  
+### 🧩 Requisitos previos
+1. Tener instalado **Python 3.10 o superior**.
+2. Asegurarse de que todos los archivos estén en la misma carpeta:
+   - `main.py`
+   - `mapa.py`
+   - `busqueda_costo_uniforme.py`
+   - `busqueda_a_estrella.py`
+3. No requiere librerías externas.
+4. Para ejecutar el programa, abrir la terminal en la carpeta del proyecto y escribir:
 
 ```bash
-python --version
+python main.py
 ```
-
-Si no lo tienes, descárgalo desde:  
-👉 [https://www.python.org/downloads/](https://www.python.org/downloads/)
-
-### 2. Crear el archivo del programa  
-Copia el código completo en un archivo llamado, por ejemplo:  
-
-```
-busqueda_ciudades.py
-```
-
-### 3. Ejecutar el programa  
-Abre una terminal en la carpeta donde guardaste el archivo y ejecuta:  
-
-```bash
-python busqueda_ciudades.py
-```
-
-El programa mostrará los resultados de la búsqueda en amplitud y en profundidad.  
 
 ---
 
-## 🧠 Funcionamiento del Código  
+## 🧱 Explicación detallada del código
 
-### 1. Representación del Mapa  
-El mapa se modela como un **diccionario (grafo)**, donde cada clave es una ciudad y su valor es una lista de las ciudades conectadas directamente.  
+### 🗺️ 1. `mapa.py`
+Define la **representación del mapa de Bolivia** como un **grafo ponderado**.  
+Cada ciudad es un nodo, y las conexiones (carreteras) entre ciudades son las aristas con sus respectivos kilómetros.
 
+Ejemplo de estructura:
 ```python
-mapa_bolivia = {
-    'La Paz': ['Oruro', 'Beni'],
-    'Oruro': ['La Paz', 'Cochabamba', 'Potosi'],
+mapa_bolivia_mejorado = {
+    "La Paz": {"Oruro": 230, "Cochabamba": 380},
+    "Oruro": {"Potosí": 320, "Sucre": 450},
     ...
 }
 ```
-
-Este enfoque permite recorrer las conexiones entre ciudades de manera eficiente.
-
----
-
-### 2. Algoritmo de **Búsqueda en Amplitud (BFS)**  
-
-La función `busqueda_amplitud()` utiliza una **cola (`deque`)** para explorar primero las rutas más cortas.  
-Sigue un proceso de **exploración por niveles**, garantizando encontrar el **camino más corto** en términos de número de paradas.
-
-**Etapas del algoritmo:**  
-1. Se inicia desde la ciudad de origen.  
-2. Se exploran todas las ciudades vecinas (nivel 1).  
-3. Luego las ciudades conectadas a esas vecinas (nivel 2), y así sucesivamente.  
-4. Cuando se encuentra el destino, se retorna el camino completo.
-
-```python
-cola = deque([[inicio]])
-visitados = {inicio}
-```
+También contiene las **coordenadas aproximadas** de cada ciudad, usadas por la heurística del algoritmo A\*.  
+Además, define la función `heuristica_distancia_recta(ciudad_a, ciudad_b)` que calcula la distancia estimada entre dos ciudades (basada en sus coordenadas).
 
 ---
 
-### 3. Algoritmo de **Búsqueda en Profundidad (DFS)**  
+### 🔍 2. `busqueda_costo_uniforme.py`
+Implementa el algoritmo **Uniform Cost Search (UCS)**.  
+Este algoritmo utiliza una **cola de prioridad** que siempre expande el camino con el menor costo acumulado.
 
-La función `busqueda_profundidad()` utiliza una **pila** para explorar primero los caminos más profundos.  
-Este método no garantiza el camino más corto, pero encuentra **una posible ruta válida**.
+Flujo básico:
+1. Empieza desde la ciudad de origen.
+2. En cada paso, expande la ciudad con el menor costo total.
+3. Si encuentra la ciudad destino, devuelve el camino, el costo total y cuántas ciudades analizó.
 
-**Etapas del algoritmo:**  
-1. Se parte desde la ciudad inicial.  
-2. Se avanza lo más profundo posible por un camino.  
-3. Si se llega a un punto sin salida, se retrocede (“backtracking”).  
-4. Se repite hasta hallar el destino o agotar las opciones.
-
+Fragmento clave:
 ```python
-pila = [[inicio]]
-visitados = {inicio}
+for vecino, distancia in mapa[ciudad_actual].items():
+    nuevo_costo = costo_actual + distancia
+    ...
 ```
+Esto asegura que cada vecino se evalúe sumando la distancia total recorrida hasta ese punto.
 
 ---
 
-### 4. Ejecución Principal  
+### 🌟 3. `busqueda_a_estrella.py`
+Implementa el algoritmo **A\*** (A estrella).  
+A diferencia del UCS, este utiliza una **heurística informada** que estima la distancia restante al destino.
 
-El código define las ciudades de inicio y destino:
+Fórmula usada:
+```
+f(n) = g(n) + h(n)
+```
+Donde:
+- `g(n)` = costo acumulado real del camino.
+- `h(n)` = estimación heurística (distancia recta al destino).
 
+Esto permite encontrar la mejor ruta más rápido, ya que prioriza los caminos más prometedores.
+
+Fragmento principal:
 ```python
-ciudad_inicio = 'La Paz'
-ciudad_destino = 'Tarija'
+costo_h = heuristica_distancia_recta(vecino, fin)
+nuevo_costo_total = costo_g + costo_h
 ```
-
-Luego ejecuta ambos algoritmos y muestra los resultados:  
-
-```python
-print("→ Usando Búsqueda en Amplitud (BFS) ←")
-print("→ Usando Búsqueda en Profundidad (DFS) ←")
-```
-
-**Salida esperada (ejemplo):**  
-```
-Buscando ruta de 'La Paz' a 'Tarija'.
-
-→ Usando Búsqueda en Amplitud (BFS) ←
-Camino encontrado: La Paz ➜ Oruro ➜ Potosi ➜ Tarija
-Número de paradas: 3
-
-→ Usando Búsqueda en Profundidad (DFS) ←
-Camino encontrado: La Paz ➜ Oruro ➜ Cochabamba ➜ Chuquisaca ➜ Tarija
-Número de paradas: 4
-```
+Aquí se combina el costo recorrido (`costo_g`) con la heurística (`costo_h`).
 
 ---
 
-## 🧾 Conclusión  
+### 🚀 4. `main.py`
+Coordina la ejecución de los algoritmos.  
+Define el punto de inicio y destino, ejecuta ambos métodos y muestra los resultados.
 
-Este programa aplica los algoritmos de búsqueda BFS y DFS para resolver problemas de rutas en un grafo que representa el mapa de Bolivia.
-Permite observar cómo cada método ofrece estrategias distintas de exploración, siendo BFS ideal para el camino más corto y DFS útil para explorar todas las rutas posibles.
+```python
+ciudad_inicio = "La Paz"
+ciudad_destino = "Tarija"
+
+camino_ucs, costo_ucs, expandidos_ucs = busqueda_costo_uniforme(mapa_bolivia_mejorado, ciudad_inicio, ciudad_destino)
+camino_a_estrella, costo_a_estrella, expandidos_a_estrella = busqueda_a_estrella(mapa_bolivia_mejorado, ciudad_inicio, ciudad_destino)
+```
+Finalmente imprime los resultados comparando ambos algoritmos.
+
+---
+
+## 💡 Salida esperada
+
+Al ejecutar `main.py`, el programa muestra algo similar a lo siguiente:
+
+```
+Buscando la ruta más corta de 'La Paz' a 'Tarija'.
+
+-     Usando Búsqueda de Costo Uniforme (UCS) -
+Camino encontrado: La Paz → Oruro → Potosí → Tarija
+Costo total del viaje: 905 km
+Ciudades (nodos) expandidas: 8
+
+-     Usando Búsqueda A* (Informada) -
+Camino encontrado: La Paz → Cochabamba → Sucre → Tarija
+Costo total del viaje: 870 km
+Ciudades (nodos) expandidas: 5
+```
+
+Esto demuestra que A\* es más eficiente (menos ciudades analizadas) al usar información heurística.
+
+---
+
+## 🧩 Conclusión
+
+Este proyecto llega a mostrar cómo los algoritmos de búsqueda informada y no informada pueden encontrar rutas entre ciudades de Bolivia. UCS garantiza la ruta más corta pero explora más nodos, mientras que A* llega a usar heurísticas para ser más rápido y eficiente. La comparación llega a demostrar cómo una buena heurística nos permite tomar decisiones más inteligentes, optimizando tiempo y recursos en problemas de planificación de rutas.
